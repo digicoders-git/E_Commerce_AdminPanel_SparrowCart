@@ -79,11 +79,11 @@ const Login = () => {
       >
         {/* Branding Section */}
         <div className="text-center mb-8">
-          <div className="w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center bg-white p-2 shadow">
+          <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden shadow border-2" style={{ borderColor: themeColors.primary }}>
             <img
-              src="querylogo.png"
-              alt="Query Logo"
-              className="w-full h-full object-contain"
+              src="sparrowcart-logo.png"
+              alt="SparrowCart Logo"
+              className="w-full h-full object-cover"
             />
           </div>
 
@@ -91,7 +91,7 @@ const Login = () => {
             className="text-3xl font-bold mb-1"
             style={{ color: themeColors.primary }}
           >
-            TheQuickPoint
+            SparrowCart
           </h1>
 
           <p className="text-sm" style={{ color: themeColors.textSecondary }}>

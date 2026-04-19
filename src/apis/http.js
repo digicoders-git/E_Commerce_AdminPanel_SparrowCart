@@ -1,10 +1,7 @@
 import axios from "axios";
 
-// Fallback baseURL (remove trailing slash if any)
-const FALLBACK_BASE_URL = "{{baseUrl}}".replace(/\/+$/, "");
-
 const http = axios.create({
-  baseURL: import.meta.env?.VITE_API_BASE_URL || FALLBACK_BASE_URL,
+  baseURL: import.meta.env?.VITE_API_BASE_URL || "http://localhost:5000/api",
   headers: {
     "Content-Type": "application/json",
   },
@@ -58,8 +55,8 @@ http.interceptors.response.use(
 
       // 🔁 Force redirect to admin login
       // (use window.location to reset app state fully)
-      if (!window.location.pathname.includes("/admin/login")) {
-        window.location.href = "/admin/login";
+      if (!window.location.pathname.includes("/login")) {
+        window.location.href = "/login";
       }
     }
 

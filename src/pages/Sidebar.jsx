@@ -23,7 +23,7 @@ const SidebarItem = memo(({ route, isActive, themeColors, onClose }) => {
         isActive ? "shadow-md" : "hover:shadow-sm"
       }`}
       style={{
-        color: isActive ? themeColors.primary : themeColors.text,
+        color: isActive ? themeColors.active?.text || "#ffffff" : themeColors.text,
         backgroundColor: isActive
           ? themeColors.active?.background || `${themeColors.primary}15`
           : "transparent",
@@ -48,7 +48,7 @@ const SidebarItem = memo(({ route, isActive, themeColors, onClose }) => {
       <IconComponent
         className="mr-3 text-lg transition-colors duration-200"
         style={{
-          color: isActive ? themeColors.primary : themeColors.textSecondary,
+          color: isActive ? themeColors.active?.text || "#ffffff" : themeColors.textSecondary,
         }}
       />
       <span className="font-medium text-sm">{route.name}</span>
@@ -108,18 +108,18 @@ const Sidebar = ({
           style={{ borderColor: themeColors.border }}
         >
           <div className="flex items-center">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center mr-3 bg-white p-1">
+            <div className="w-8 h-8 rounded-full overflow-hidden mr-3 border" style={{ borderColor: themeColors.primary }}>
               <img
-                src="querylogo.png"
-                alt="Auction Here Logo"
-                className="w-full h-full object-contain"
+                src="sparrowcart-logo.png"
+                alt="SparrowCart Logo"
+                className="w-full h-full object-cover"
               />
             </div>
             <h1
               className="text-xl font-bold"
               style={{ color: themeColors.primary }}
             >
-              TheQuickPoint
+              SparrowCart
             </h1>
           </div>
           <button
@@ -175,7 +175,7 @@ const Sidebar = ({
                 className="font-medium text-sm truncate"
                 style={{ color: themeColors.text }}
               >
-                {user?.name || "The Quick Point Manager"}
+                {user?.name || "SparrowCart Manager"}
               </p>
               <p
                 className="text-xs opacity-75 truncate"

@@ -3,30 +3,30 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 // ---- 4 Color Theme Core ----
 const BASE_COLORS = {
-  primary: "#000000",       // Black
+  primary: "#0F3D3E",       // SparrowCart Teal
   secondary: "#ffffff",     // White
 
-  accent: "#f59e0b",        // Orange
+  accent: "#1FB6C9",        // SparrowCart Cyan
   success: "#10b981",       // Green
-  warning: "#f59e0b",       // Orange
+  warning: "#F04E3E",       // SparrowCart Coral
 
-  backgroundLight: "#ffffff",
-  backgroundDark: "#000000",
+  backgroundLight: "#F7F8FA",
+  backgroundDark: "#0a1a1a",
 
   surfaceLight: "#ffffff",
-  surfaceDark: "#111111",
+  surfaceDark: "#0F2526",
 
-  textLight: "#000000",
-  textDark: "#ffffff",
+  textLight: "#1A1A1A",
+  textDark: "#F7F8FA",
 
-  borderLight: "#f59e0b",   // Orange Border
-  borderDark: "#f59e0b",
+  borderLight: "#E8ECF0",
+  borderDark: "#1a5557",
 
-  hoverLight: "#ffe8c7",    // Light Orange Hover
-  hoverDark: "#f59e0b33",   // Orange Transparent Hover
+  hoverLight: "#e8f8fa",    // accent-light
+  hoverDark: "#1FB6C920",
 
-  activeLight: "#f59e0b",   // Active Orange
-  activeDark: "#f59e0b",
+  activeLight: "#1a5557",   // teal-light
+  activeDark: "#1a5557",
 };
 
 // ---- All palettes same now ----
@@ -94,6 +94,8 @@ export const ThemeProvider = ({ children }) => {
       },
 
       onPrimary: "#ffffff",
+      textSecondary: "#6B7280",
+      danger: "#F04E3E",
     },
 
     dark: {
@@ -125,6 +127,8 @@ export const ThemeProvider = ({ children }) => {
       },
 
       onPrimary: "#ffffff",
+      textSecondary: "#9CA3AF",
+      danger: "#F04E3E",
     },
   };
 
