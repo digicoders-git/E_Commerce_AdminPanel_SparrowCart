@@ -54,12 +54,12 @@ const routes = [
     name: "Products",
     icon: FaBox,
   },
-  // {
-  //   path: "/orders",
-  //   component: Orders,
-  //   name: "Orders",
-  //   icon: FaShoppingCart,
-  // },
+  {
+    path: "/orders",
+    component: Orders,
+    name: "Orders",
+    icon: FaShoppingCart,
+  },
   // {
   //   path: "/stores",
   //   component: Stores,
