@@ -895,12 +895,12 @@ export default function Categories() {
                       disabled={actionLoading}
                       className="p-2 rounded-lg hover:bg-opacity-20 transition-colors"
                       style={{
-                        backgroundColor: category?.isActive ? '#F59E0B20' : '#10B98120',
-                        color: category?.isActive ? '#F59E0B' : '#10B981'
+                        backgroundColor: category?.isActive ? '#10B98120' : '#F59E0B20',
+                        color: category?.isActive ? '#10B981' : '#F59E0B'
                       }}
                       title={category?.isActive ? "Deactivate" : "Activate"}
                     >
-                      {category?.isActive ? <FaToggleOff /> : <FaToggleOn />}
+                      {category?.isActive ? <FaToggleOn /> : <FaToggleOff />}
                     </button>
                     <button
                       onClick={() => handleDelete(category)}

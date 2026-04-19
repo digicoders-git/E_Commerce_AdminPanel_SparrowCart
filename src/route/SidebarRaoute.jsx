@@ -37,12 +37,6 @@ const routes = [
     icon: FaTachometerAlt,
   },
   {
-    path: "/orders",
-    component: Orders,
-    name: "Orders",
-    icon: FaShoppingCart,
-  },
-  {
     path: "/users",
     component: Users,
     name: "Users",
@@ -60,22 +54,28 @@ const routes = [
     name: "Products",
     icon: FaBox,
   },
-  {
-    path: "/stores",
-    component: Stores,
-    name: "Stores",
-    icon: FaStore,
-  },
-  {
-    path: "/delivery-boys",
-    component: DeliveryBoys,
-    name: "Delivery Boys",
-    icon: FaMotorcycle,
-    // Alternative icons you could use:
-    // FaUserTie (for delivery personnel)
-    // FaTruck (for delivery vehicle)
-    // FaShippingFast (if available)
-  },
+  // {
+  //   path: "/orders",
+  //   component: Orders,
+  //   name: "Orders",
+  //   icon: FaShoppingCart,
+  // },
+  // {
+  //   path: "/stores",
+  //   component: Stores,
+  //   name: "Stores",
+  //   icon: FaStore,
+  // },
+  // {
+  //   path: "/delivery-boys",
+  //   component: DeliveryBoys,
+  //   name: "Delivery Boys",
+  //   icon: FaMotorcycle,
+  //   // Alternative icons you could use:
+  //   // FaUserTie (for delivery personnel)
+  //   // FaTruck (for delivery vehicle)
+  //   // FaShippingFast (if available)
+  // },
   {
     path: "/sliders",
     component: Sliders,
