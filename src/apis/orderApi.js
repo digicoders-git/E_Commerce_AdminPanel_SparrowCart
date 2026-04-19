@@ -7,46 +7,46 @@ import http from "./http";
 
 // Get all orders (admin)
 export const getAllOrdersAPI = () => {
-  return http.get(`/api/orders`);
+  return http.get(`/orders`);
 };
 
 // Get global orders
 export const getGlobalOrdersAPI = () => {
-  return http.get(`/api/orders/global`);
+  return http.get(`/orders/global`);
 };
 
 // Get store orders by store ID
 export const getStoreOrdersAPI = (storeId) => {
-  return http.get(`/api/orders/store/${storeId}`);
+  return http.get(`/orders/store/${storeId}`);
 };
 
 // Get single order by ID
 export const getOrderByIdAPI = (orderId) => {
-  return http.get(`/api/orders/${orderId}`);
+  return http.get(`/orders/${orderId}`);
 };
 
 // Update order status
 export const updateOrderStatusAPI = (orderId, status) => {
-  return http.patch(`/api/orders/${orderId}/status`, { status });
+  return http.patch(`/orders/${orderId}/status`, { status });
 };
 
 // Update payment status
 export const updatePaymentStatusAPI = (orderId, paymentStatus) => {
-  return http.patch(`/api/orders/${orderId}/payment-status`, { paymentStatus });
+  return http.patch(`/orders/${orderId}/payment-status`, { paymentStatus });
 };
 
 // Delete order (soft delete)
 export const deleteOrderAPI = (orderId) => {
-  return http.delete(`/api/orders/${orderId}`);
+  return http.delete(`/orders/${orderId}`);
 };
 
 // Get order statistics
 export const getOrderStatsAPI = () => {
-  return http.get(`/api/orders/stats`);
+  return http.get(`/orders/stats`);
 };
 
 export const getUserOrdersAPI = (userId) => {
-  return http.get(`/api/orders/my?userId=${userId}`);
+  return http.get(`/orders/my?userId=${userId}`);
 };
 
 export default {

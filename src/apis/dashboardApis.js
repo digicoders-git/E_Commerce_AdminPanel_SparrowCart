@@ -8,7 +8,7 @@ import http from "../apis/http";
  * returns: axios response (response.data expected to contain dashboard object)
  */
 export const adminDashboardAPI = () => {
-  return http.get("/api/dashboard/admin");
+  return http.get("/dashboard/admin");
 };
 
 /**
@@ -16,7 +16,7 @@ export const adminDashboardAPI = () => {
  * GET /api/dashboard/quick-stats
  */
 export const quickStatsAPI = () => {
-  return http.get("/api/dashboard/quick-stats");
+  return http.get("/dashboard/quick-stats");
 };
 
 /**
@@ -30,7 +30,7 @@ export const analyticsAPI = ({ type = "month", startDate, endDate } = {}) => {
   if (startDate) params.set("startDate", startDate);
   if (endDate) params.set("endDate", endDate);
 
-  return http.get(`/api/dashboard/analytics/period?${params.toString()}`);
+  return http.get(`/dashboard/analytics/period?${params.toString()}`);
 };
 
 export default {

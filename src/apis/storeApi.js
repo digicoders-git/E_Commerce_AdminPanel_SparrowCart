@@ -7,7 +7,7 @@ import http from "./http";
 
 // Create new store
 export const createStoreAPI = (formData) => {
-  return http.post(`/api/stores`, formData, {
+  return http.post(`/stores`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -16,22 +16,22 @@ export const createStoreAPI = (formData) => {
 
 // Get all stores (admin)
 export const getAllStoresAPI = () => {
-  return http.get(`/api/stores/admin`);
+  return http.get(`/stores/admin`);
 };
 
 // Get single store by ID
 export const getStoreByIdAPI = (storeId) => {
-  return http.get(`/api/stores/admin/${storeId}`);
+  return http.get(`/stores/admin/${storeId}`);
 };
 
 // Get products for a specific store (public API)
 export const getStoreProductsAPI = (storeId) => {
-  return http.get(`/api/stores/${storeId}/products`);
+  return http.get(`/stores/${storeId}/products`);
 };
 
 // Update store
 export const updateStoreAPI = (storeId, formData) => {
-  return http.patch(`/api/stores/${storeId}`, formData, {
+  return http.patch(`/stores/${storeId}`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -40,22 +40,22 @@ export const updateStoreAPI = (storeId, formData) => {
 
 // Update store status (active/inactive)
 export const updateStoreStatusAPI = (storeId, isActive) => {
-  return http.patch(`/api/stores/${storeId}/status`, { isActive });
+  return http.patch(`/stores/${storeId}/status`, { isActive });
 };
 
 // Delete store
 export const deleteStoreAPI = (storeId) => {
-  return http.delete(`/api/stores/${storeId}`);
+  return http.delete(`/stores/${storeId}`);
 };
 
 // Assign product to store
 export const assignProductToStoreAPI = (storeId, productId) => {
-  return http.patch(`/api/stores/${storeId}/products/${productId}/assign`);
+  return http.patch(`/stores/${storeId}/products/${productId}/assign`);
 };
 
 // Unassign product from store
 export const unassignProductFromStoreAPI = (storeId, productId) => {
-  return http.patch(`/api/stores/${storeId}/products/${productId}/unassign`);
+  return http.patch(`/stores/${storeId}/products/${productId}/unassign`);
 };
 
 export default {

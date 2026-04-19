@@ -7,32 +7,32 @@ import http from "./http";
 
 // Create new offer text
 export const createOfferTextAPI = (payload) => {
-  return http.post(`/api/offer-texts`, payload);
+  return http.post(`/offer-texts`, payload);
 };
 
 // Get all offer texts (admin)
 export const getAllOfferTextsAPI = () => {
-  return http.get(`/api/offer-texts/admin`);
+  return http.get(`/offer-texts/admin`);
 };
 
 // Get single offer text by ID
 export const getOfferTextByIdAPI = (offerTextId) => {
-  return http.get(`/api/offer-texts/${offerTextId}`);
+  return http.get(`/offer-texts/${offerTextId}`);
 };
 
 // Update offer text
 export const updateOfferTextAPI = (offerTextId, payload) => {
-  return http.patch(`/api/offer-texts/${offerTextId}`, payload);
+  return http.patch(`/offer-texts/${offerTextId}`, payload);
 };
 
 // Update offer text status (active/inactive)
 export const updateOfferTextStatusAPI = (offerTextId, isActive) => {
-  return http.patch(`/api/offer-texts/${offerTextId}/status`, { isActive });
+  return http.patch(`/offer-texts/${offerTextId}/status`, { isActive });
 };
 
 // Delete offer text
 export const deleteOfferTextAPI = (offerTextId) => {
-  return http.delete(`/api/offer-texts/${offerTextId}`);
+  return http.delete(`/offer-texts/${offerTextId}`);
 };
 
 export default {

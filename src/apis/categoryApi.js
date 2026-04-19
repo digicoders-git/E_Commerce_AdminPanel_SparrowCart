@@ -7,7 +7,7 @@ import http from "./http";
 
 // Create new category
 export const createCategoryAPI = (formData) => {
-  return http.post(`/api/categories`, formData, {
+  return http.post(`/categories`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -16,17 +16,17 @@ export const createCategoryAPI = (formData) => {
 
 // Get all categories (admin)
 export const getAllCategoriesAPI = () => {
-  return http.get(`/api/categories/admin`);
+  return http.get(`/categories/admin`);
 };
 
 // Get single category by ID
 export const getCategoryByIdAPI = (categoryId) => {
-  return http.get(`/api/categories/${categoryId}`);
+  return http.get(`/categories/${categoryId}`);
 };
 
 // Update category
 export const updateCategoryAPI = (categoryId, formData) => {
-  return http.patch(`/api/categories/${categoryId}`, formData, {
+  return http.patch(`/categories/${categoryId}`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -35,12 +35,12 @@ export const updateCategoryAPI = (categoryId, formData) => {
 
 // Update category status (active/inactive)
 export const updateCategoryStatusAPI = (categoryId, isActive) => {
-  return http.patch(`/api/categories/${categoryId}/status`, { isActive });
+  return http.patch(`/categories/${categoryId}/status`, { isActive });
 };
 
 // Delete category
 export const deleteCategoryAPI = (categoryId) => {
-  return http.delete(`/api/categories/${categoryId}`);
+  return http.delete(`/categories/${categoryId}`);
 };
 
 export default {

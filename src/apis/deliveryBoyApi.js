@@ -7,7 +7,7 @@ import http from "./http";
 
 // Create new delivery boy
 export const createDeliveryBoyAPI = (formData) => {
-  return http.post(`/api/delivery-boys`, formData, {
+  return http.post(`/delivery-boys`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -16,17 +16,17 @@ export const createDeliveryBoyAPI = (formData) => {
 
 // Get all delivery boys (admin)
 export const getAllDeliveryBoysAPI = () => {
-  return http.get(`/api/delivery-boys/admin`);
+  return http.get(`/delivery-boys/admin`);
 };
 
 // Get single delivery boy by ID
 export const getDeliveryBoyByIdAPI = (deliveryBoyId) => {
-  return http.get(`/api/delivery-boys/admin/${deliveryBoyId}`);
+  return http.get(`/delivery-boys/admin/${deliveryBoyId}`);
 };
 
 // Update delivery boy
 export const updateDeliveryBoyAPI = (deliveryBoyId, formData) => {
-  return http.patch(`/api/delivery-boys/${deliveryBoyId}`, formData, {
+  return http.patch(`/delivery-boys/${deliveryBoyId}`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -35,12 +35,12 @@ export const updateDeliveryBoyAPI = (deliveryBoyId, formData) => {
 
 // Update delivery boy status (active/inactive)
 export const updateDeliveryBoyStatusAPI = (deliveryBoyId, isActive) => {
-  return http.patch(`/api/delivery-boys/${deliveryBoyId}/status`, { isActive });
+  return http.patch(`/delivery-boys/${deliveryBoyId}/status`, { isActive });
 };
 
 // Delete delivery boy
 export const deleteDeliveryBoyAPI = (deliveryBoyId) => {
-  return http.delete(`/api/delivery-boys/${deliveryBoyId}`);
+  return http.delete(`/delivery-boys/${deliveryBoyId}`);
 };
 
 export default {

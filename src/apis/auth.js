@@ -20,7 +20,7 @@ export const adminLogin = async ({ adminId, password }) => {
   };
 
   try {
-    const { data } = await http.post("/api/admin/login", payload);
+    const { data } = await http.post("/admin/login", payload);
 
     // Safety checks for expected response shape
     if (!data || !data.token || !data.admin) {
