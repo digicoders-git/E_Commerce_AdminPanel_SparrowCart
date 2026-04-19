@@ -484,7 +484,7 @@ export default function Products() {
                 id="swal-name"
                 type="text"
                 className="w-full p-2 rounded-lg border"
-                placeholder="e.g., Premium Milk, Electric Repair Kit"
+                placeholder="e.g. Samsung S24 Ultra, LG OLED TV"
                 style={{
                   borderColor: themeColors.border,
                   backgroundColor: themeColors.background,
@@ -531,7 +531,7 @@ export default function Products() {
                 min="0"
                 step="0.01"
                 className="w-full p-2 rounded-lg border"
-                placeholder="1000"
+                placeholder="e.g. 75000"
                 style={{
                   borderColor: themeColors.border,
                   backgroundColor: themeColors.background,
@@ -550,7 +550,7 @@ export default function Products() {
                 min="0"
                 step="0.01"
                 className="w-full p-2 rounded-lg border"
-                placeholder="800"
+                placeholder="e.g. 69999"
                 style={{
                   borderColor: themeColors.border,
                   backgroundColor: themeColors.background,
@@ -568,7 +568,7 @@ export default function Products() {
                 type="number"
                 min="0"
                 className="w-full p-2 rounded-lg border"
-                placeholder="50"
+                placeholder="e.g. 10"
                 style={{
                   borderColor: themeColors.border,
                   backgroundColor: themeColors.background,
@@ -625,7 +625,7 @@ export default function Products() {
               id="swal-description"
               rows="3"
               className="w-full p-2 rounded-lg border"
-              placeholder="Product description..."
+              placeholder="e.g. 6.7-inch Dynamic AMOLED 2X, Snapdragon 8 Gen 3, 5000mAh battery..."
               style={{
                 borderColor: themeColors.border,
                 backgroundColor: themeColors.background,

@@ -112,7 +112,7 @@ export default function OfferTexts() {
             <textarea
               id="swal-text"
               className="w-full p-3 rounded-lg border min-h-[120px]"
-              placeholder="Enter your promotional text here..."
+              placeholder="e.g. Flash Sale: Get up to 40% off on all Gaming Laptops this weekend! Use code TECH40."
               style={{
                 borderColor: themeColors.border,
                 backgroundColor: themeColors.background,
@@ -232,7 +232,7 @@ export default function OfferTexts() {
               id="swal-edit-text"
               className="w-full p-3 rounded-lg border min-h-[120px]"
               defaultValue={offerText?.text || ''}
-              placeholder="Enter your promotional text here..."
+              placeholder="e.g. Flash Sale: Get up to 40% off on all Gaming Laptops this weekend! Use code TECH40."
               style={{
                 borderColor: themeColors.border,
                 backgroundColor: themeColors.background,

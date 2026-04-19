@@ -421,7 +421,7 @@ export default function Stores() {
                 id="swal-storeName"
                 type="text"
                 className="w-full p-2 rounded-lg border"
-                placeholder="e.g., Main City Store, Downtown Branch"
+                placeholder="e.g. Tech Zone Main Hub, Galaxy Electronics"
                 style={{
                   borderColor: themeColors.border,
                   backgroundColor: themeColors.background,
@@ -438,7 +438,7 @@ export default function Stores() {
                 id="swal-storeCode"
                 type="text"
                 className="w-full p-2 rounded-lg border"
-                placeholder="e.g., STORE-001, BRANCH-002"
+                placeholder="e.g. TECH-001, GALAXY-DELHI"
                 style={{
                   borderColor: themeColors.border,
                   backgroundColor: themeColors.background,
@@ -599,7 +599,7 @@ export default function Stores() {
                 id="swal-managerName"
                 type="text"
                 className="w-full p-2 rounded-lg border"
-                placeholder="e.g., Rohit Kumar"
+                placeholder="e.g. Rahul Sharma"
                 style={{
                   borderColor: themeColors.border,
                   backgroundColor: themeColors.background,
@@ -696,7 +696,7 @@ export default function Stores() {
               id="swal-notes"
               rows="3"
               className="w-full p-2 rounded-lg border"
-              placeholder="e.g., Main flagship store, Near metro station, Parking available"
+              placeholder="e.g. Prime location for tech enthusiasts, Dedicated Apple Service desk available"
               style={{
                 borderColor: themeColors.border,
                 backgroundColor: themeColors.background,

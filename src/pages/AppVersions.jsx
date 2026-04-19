@@ -116,7 +116,7 @@ export default function AppVersions() {
                 id="swal-versionCode"
                 type="number"
                 className="w-full p-2 rounded-lg border"
-                placeholder="e.g., 107"
+                placeholder="e.g. 110"
                 style={{
                   borderColor: themeColors.border,
                   backgroundColor: themeColors.background,
@@ -132,7 +132,7 @@ export default function AppVersions() {
                 id="swal-versionName"
                 type="text"
                 className="w-full p-2 rounded-lg border"
-                placeholder="e.g., 1.0.7"
+                placeholder="e.g. 1.1.0 (Gadget Update)"
                 style={{
                   borderColor: themeColors.border,
                   backgroundColor: themeColors.background,
@@ -168,7 +168,7 @@ export default function AppVersions() {
               id="swal-downloadUrl"
               type="url"
               className="w-full p-2 rounded-lg border"
-              placeholder="https://play.google.com/store/apps/details?id=com.quickpoint"
+              placeholder="https://play.google.com/store/apps/details?id=com.sparrowcart.electronics"
               style={{
                 borderColor: themeColors.border,
                 backgroundColor: themeColors.background,
@@ -184,7 +184,7 @@ export default function AppVersions() {
             <textarea
               id="swal-releaseNotes"
               className="w-full p-2 rounded-lg border h-20"
-              placeholder="Bug fixes and performance improvements"
+              placeholder="e.g. Optimized high-res rendering for 4K TV images, Added real-time tracking for tech deliveries."
               style={{
                 borderColor: themeColors.border,
                 backgroundColor: themeColors.background,

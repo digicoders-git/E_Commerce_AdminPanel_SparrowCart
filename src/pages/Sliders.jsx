@@ -81,122 +81,157 @@ export default function Sliders() {
   // Show create slider modal
   const showCreateModal = () => {
     MySwal.fire({
-      title: <div className="text-xl font-bold" style={{ color: themeColors.text }}>Create New Slider</div>,
+      title: (
+        <div className="flex items-center gap-3 p-2">
+          <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600">
+            <FaPlus size={20} />
+          </div>
+          <div className="text-left">
+            <h3 className="text-xl font-bold" style={{ color: themeColors.text }}>Create New Slider</h3>
+            <p className="text-xs font-normal opacity-60">Add a stunning banner to your homepage</p>
+          </div>
+        </div>
+      ),
       html: (
-        <div className="space-y-4 text-left">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: themeColors.text }}>Title *</label>
+        <div className="space-y-5 text-left p-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="space-y-1.5">
+              <label className="flex items-center gap-2 text-sm font-semibold opacity-80" style={{ color: themeColors.text }}>
+                <FaImage className="text-blue-500" /> Title *
+              </label>
               <input
                 id="swal-title"
                 type="text"
-                className="w-full p-2 rounded-lg border"
-                placeholder="Enter slider title"
+                className="w-full p-3 rounded-2xl border bg-opacity-50 transition-all focus:ring-2 focus:ring-blue-500 outline-none"
+                placeholder="e.g. Next-Gen Gaming Sale"
                 style={{
                   borderColor: themeColors.border,
-                  backgroundColor: themeColors.background,
+                  backgroundColor: themeColors.surface,
                   color: themeColors.text
                 }}
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: themeColors.text }}>Subtitle *</label>
+            <div className="space-y-1.5">
+              <label className="flex items-center gap-2 text-sm font-semibold opacity-80" style={{ color: themeColors.text }}>
+                <FaSync className="text-purple-500" /> Subtitle *
+              </label>
               <input
                 id="swal-subtitle"
                 type="text"
-                className="w-full p-2 rounded-lg border"
-                placeholder="Enter slider subtitle"
+                className="w-full p-3 rounded-2xl border bg-opacity-50 transition-all focus:ring-2 focus:ring-blue-500 outline-none"
+                placeholder="e.g. Get the latest PS5 at 20% Off"
                 style={{
                   borderColor: themeColors.border,
-                  backgroundColor: themeColors.background,
+                  backgroundColor: themeColors.surface,
                   color: themeColors.text
                 }}
               />
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1" style={{ color: themeColors.text }}>Redirect URL *</label>
-            <input
-              id="swal-redirectUrl"
-              type="url"
-              className="w-full p-2 rounded-lg border"
-              placeholder="https://example.com/path"
-              style={{
-                borderColor: themeColors.border,
-                backgroundColor: themeColors.background,
-                color: themeColors.text
-              }}
-            />
+          <div className="space-y-1.5">
+            <label className="flex items-center gap-2 text-sm font-semibold opacity-80" style={{ color: themeColors.text }}>
+              <FaLink className="text-green-500" /> Redirect Target *
+            </label>
+            <div className="relative">
+              <input
+                id="swal-redirectUrl"
+                type="text"
+                className="w-full p-3 rounded-2xl border bg-opacity-50 transition-all focus:ring-2 focus:ring-blue-500 outline-none"
+                placeholder="Enter category (e.g. Gaming) or URL"
+                style={{
+                  borderColor: themeColors.border,
+                  backgroundColor: themeColors.surface,
+                  color: themeColors.text
+                }}
+              />
+              <div className="mt-1.5 px-1 flex items-center gap-1.5">
+                <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></div>
+                <p className="text-[11px] opacity-60 italic">
+                  Tip: Entering 'Fashion' will link to '/products?category=Fashion'
+                </p>
+              </div>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: themeColors.text }}>Sort Order</label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="space-y-1.5">
+              <label className="flex items-center gap-2 text-sm font-semibold opacity-80" style={{ color: themeColors.text }}>
+                <FaSort className="text-orange-500" /> Sort Order
+              </label>
               <input
                 id="swal-sortOrder"
                 type="number"
                 min="0"
-                className="w-full p-2 rounded-lg border"
+                className="w-full p-3 rounded-2xl border bg-opacity-50 outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="1"
                 defaultValue="1"
                 style={{
                   borderColor: themeColors.border,
-                  backgroundColor: themeColors.background,
+                  backgroundColor: themeColors.surface,
                   color: themeColors.text
                 }}
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: themeColors.text }}>Status</label>
+            <div className="space-y-1.5">
+              <label className="flex items-center gap-2 text-sm font-semibold opacity-80" style={{ color: themeColors.text }}>
+                <FaCheckCircle className="text-teal-500" /> Status
+              </label>
               <select
                 id="swal-isActive"
-                className="w-full p-2 rounded-lg border"
+                className="w-full p-3 rounded-2xl border bg-opacity-50 outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
                 style={{
                   borderColor: themeColors.border,
-                  backgroundColor: themeColors.background,
+                  backgroundColor: themeColors.surface,
                   color: themeColors.text
                 }}
                 defaultValue="true"
               >
-                <option value="true">Active</option>
-                <option value="false">Inactive</option>
+                <option value="true">Active (Visible)</option>
+                <option value="false">Inactive (Hidden)</option>
               </select>
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1" style={{ color: themeColors.text }}>Slider Image *</label>
-            <input
-              id="swal-sliderImage"
-              type="file"
-              accept="image/*"
-              className="w-full p-2 rounded-lg border"
-              style={{
-                borderColor: themeColors.border,
-                backgroundColor: themeColors.background,
-                color: themeColors.text
-              }}
-              onChange={(e) => {
-                if (e.target.files[0]) {
-                  const reader = new FileReader();
-                  reader.onload = (event) => {
-                    const img = document.getElementById('image-preview');
-                    if (img) {
-                      img.src = event.target.result;
-                      img.classList.remove('hidden');
-                    }
-                  };
-                  reader.readAsDataURL(e.target.files[0]);
-                }
-              }}
-            />
-            <div className="mt-2">
+          <div className="space-y-1.5">
+            <label className="flex items-center gap-2 text-sm font-semibold opacity-80" style={{ color: themeColors.text }}>
+              <FaImage className="text-rose-500" /> Slider Image *
+            </label>
+            <div 
+              className="relative w-full h-40 rounded-2xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-gray-50 bg-opacity-30 group"
+              style={{ borderColor: themeColors.border, backgroundColor: themeColors.surface }}
+              onClick={() => document.getElementById('swal-sliderImage').click()}
+            >
+              <input
+                id="swal-sliderImage"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  if (e.target.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                      const img = document.getElementById('image-preview');
+                      const placeholder = document.getElementById('upload-placeholder');
+                      if (img) {
+                        img.src = event.target.result;
+                        img.classList.remove('hidden');
+                        placeholder.classList.add('hidden');
+                      }
+                    };
+                    reader.readAsDataURL(e.target.files[0]);
+                  }
+                }}
+              />
+              <div id="upload-placeholder" className="flex flex-col items-center text-muted group-hover:text-blue-500 transition-colors">
+                <FaImage className="text-4xl mb-2 opacity-50 group-hover:opacity-80" />
+                <p className="text-xs font-medium">Click to upload banner image</p>
+                <p className="text-[10px] opacity-70 mt-1">Recommended size: 1200 x 500px</p>
+              </div>
               <img
                 id="image-preview"
                 alt="Preview"
-                className="w-full h-32 object-cover rounded-lg border hidden"
-                style={{ borderColor: themeColors.border }}
+                className="absolute inset-0 w-full h-full object-cover rounded-2xl hidden"
               />
             </div>
           </div>
@@ -208,14 +243,25 @@ export default function Sliders() {
       confirmButtonColor: themeColors.primary || '#3B82F6',
       cancelButtonColor: themeColors.border || '#6B7280',
       background: themeColors.background,
-      width: '700px',
+      width: '740px',
+      padding: '2rem',
+      customClass: {
+        popup: 'rounded-[2rem]',
+        confirmButton: 'rounded-xl px-8 py-3 font-bold shadow-lg shadow-blue-500/20',
+        cancelButton: 'rounded-xl px-8 py-3 font-bold'
+      },
       preConfirm: async () => {
         const title = document.getElementById('swal-title').value;
         const subtitle = document.getElementById('swal-subtitle').value;
-        const redirectUrl = document.getElementById('swal-redirectUrl').value;
+        let redirectUrl = document.getElementById('swal-redirectUrl').value;
         const sortOrder = document.getElementById('swal-sortOrder').value;
         const isActive = document.getElementById('swal-isActive').value === 'true';
         const sliderImage = document.getElementById('swal-sliderImage').files[0];
+
+        // Smart Redirect Logic
+        if (redirectUrl && !redirectUrl.startsWith('/') && !redirectUrl.startsWith('http')) {
+          redirectUrl = `/products?category=${redirectUrl}`;
+        }
 
         // Validation
         if (!title || !subtitle || !redirectUrl || !sliderImage) {
@@ -261,137 +307,177 @@ export default function Sliders() {
     setSelectedSlider(slider);
     
     MySwal.fire({
-      title: <div className="text-xl font-bold" style={{ color: themeColors.text }}>Edit Slider</div>,
+      title: (
+        <div className="flex items-center gap-3 p-2">
+          <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600">
+            <FaEdit size={20} />
+          </div>
+          <div className="text-left">
+            <h3 className="text-xl font-bold" style={{ color: themeColors.text }}>Edit Slider</h3>
+            <p className="text-xs font-normal opacity-60">ID: {slider._id}</p>
+          </div>
+        </div>
+      ),
       html: (
-        <div className="space-y-4 text-left">
+        <div className="space-y-5 text-left p-2">
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-2" style={{ color: themeColors.text }}>Current Image</label>
+            <label className="flex items-center gap-2 text-sm font-semibold opacity-80 mb-2" style={{ color: themeColors.text }}>
+              <FaImage className="text-blue-500" /> Current Banner
+            </label>
             {slider.imageUrl ? (
-              <img
-                src={slider.imageUrl}
-                alt={slider.title}
-                className="w-full h-48 object-cover rounded-lg border"
-                style={{ borderColor: themeColors.border }}
-              />
+              <div className="relative rounded-2xl overflow-hidden group">
+                <img
+                  src={slider.imageUrl}
+                  alt={slider.title}
+                  className="w-full h-40 object-cover border-2"
+                  style={{ borderColor: themeColors.border }}
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="bg-white/90 text-dark px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-2">
+                    <FaSync className="animate-spin-slow" /> Current Asset
+                  </span>
+                </div>
+              </div>
             ) : (
-              <div className="w-full h-48 flex items-center justify-center rounded-lg border" style={{ borderColor: themeColors.border }}>
-                <FaImage className="text-4xl opacity-30" style={{ color: themeColors.text }} />
+              <div className="w-full h-40 flex items-center justify-center rounded-2xl border-2 border-dashed" style={{ borderColor: themeColors.border }}>
+                <FaImage className="text-4xl opacity-10" />
               </div>
             )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: themeColors.text }}>Title *</label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="space-y-1.5">
+              <label className="flex items-center gap-2 text-sm font-semibold opacity-80" style={{ color: themeColors.text }}>
+                <FaImage className="text-blue-500" /> Title *
+              </label>
               <input
                 id="swal-edit-title"
                 type="text"
-                className="w-full p-2 rounded-lg border"
+                className="w-full p-3 rounded-2xl border bg-opacity-50 outline-none focus:ring-2 focus:ring-blue-500"
                 defaultValue={slider.title}
+                placeholder="e.g. Next-Gen Gaming Sale"
                 style={{
                   borderColor: themeColors.border,
-                  backgroundColor: themeColors.background,
+                  backgroundColor: themeColors.surface,
                   color: themeColors.text
                 }}
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: themeColors.text }}>Subtitle *</label>
+            <div className="space-y-1.5">
+              <label className="flex items-center gap-2 text-sm font-semibold opacity-80" style={{ color: themeColors.text }}>
+                <FaSync className="text-purple-500" /> Subtitle *
+              </label>
               <input
                 id="swal-edit-subtitle"
                 type="text"
-                className="w-full p-2 rounded-lg border"
+                className="w-full p-3 rounded-2xl border bg-opacity-50 outline-none focus:ring-2 focus:ring-blue-500"
                 defaultValue={slider.subtitle}
+                placeholder="e.g. Get the latest PS5 at 20% Off"
                 style={{
                   borderColor: themeColors.border,
-                  backgroundColor: themeColors.background,
+                  backgroundColor: themeColors.surface,
                   color: themeColors.text
                 }}
               />
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1" style={{ color: themeColors.text }}>Redirect URL *</label>
-            <input
-              id="swal-edit-redirectUrl"
-              type="url"
-              className="w-full p-2 rounded-lg border"
-              defaultValue={slider.redirectUrl}
-              style={{
-                borderColor: themeColors.border,
-                backgroundColor: themeColors.background,
-                color: themeColors.text
-              }}
-            />
+          <div className="space-y-1.5">
+            <label className="flex items-center gap-2 text-sm font-semibold opacity-80" style={{ color: themeColors.text }}>
+              <FaLink className="text-green-500" /> Redirect Target *
+            </label>
+            <div className="relative">
+              <input
+                id="swal-edit-redirectUrl"
+                type="text"
+                className="w-full p-3 rounded-2xl border bg-opacity-50 outline-none focus:ring-2 focus:ring-blue-500"
+                defaultValue={slider.redirectUrl}
+                placeholder="Enter category (e.g. Gaming) or URL"
+                style={{
+                  borderColor: themeColors.border,
+                  backgroundColor: themeColors.surface,
+                  color: themeColors.text
+                }}
+              />
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: themeColors.text }}>Sort Order</label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="space-y-1.5">
+              <label className="flex items-center gap-2 text-sm font-semibold opacity-80" style={{ color: themeColors.text }}>
+                <FaSort className="text-orange-500" /> Sort Order
+              </label>
               <input
                 id="swal-edit-sortOrder"
                 type="number"
                 min="0"
-                className="w-full p-2 rounded-lg border"
+                className="w-full p-3 rounded-2xl border bg-opacity-50 outline-none focus:ring-2 focus:ring-blue-500"
                 defaultValue={slider.sortOrder || 1}
                 style={{
                   borderColor: themeColors.border,
-                  backgroundColor: themeColors.background,
+                  backgroundColor: themeColors.surface,
                   color: themeColors.text
                 }}
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium mb-1" style={{ color: themeColors.text }}>Status</label>
+            <div className="space-y-1.5">
+              <label className="flex items-center gap-2 text-sm font-semibold opacity-80" style={{ color: themeColors.text }}>
+                <FaCheckCircle className="text-teal-500" /> Status
+              </label>
               <select
                 id="swal-edit-isActive"
-                className="w-full p-2 rounded-lg border"
+                className="w-full p-3 rounded-2xl border bg-opacity-50 outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
                 defaultValue={slider.isActive ? "true" : "false"}
                 style={{
                   borderColor: themeColors.border,
-                  backgroundColor: themeColors.background,
+                  backgroundColor: themeColors.surface,
                   color: themeColors.text
                 }}
               >
-                <option value="true">Active</option>
-                <option value="false">Inactive</option>
+                <option value="true">Active (Visible)</option>
+                <option value="false">Inactive (Hidden)</option>
               </select>
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1" style={{ color: themeColors.text }}>New Image (Optional)</label>
-            <input
-              id="swal-edit-sliderImage"
-              type="file"
-              accept="image/*"
-              className="w-full p-2 rounded-lg border"
-              style={{
-                borderColor: themeColors.border,
-                backgroundColor: themeColors.background,
-                color: themeColors.text
-              }}
-              onChange={(e) => {
-                if (e.target.files[0]) {
-                  const reader = new FileReader();
-                  reader.onload = (event) => {
-                    const img = document.getElementById('edit-image-preview');
-                    if (img) {
-                      img.src = event.target.result;
-                      img.classList.remove('hidden');
-                    }
-                  };
-                  reader.readAsDataURL(e.target.files[0]);
-                }
-              }}
-            />
-            <div className="mt-2">
+          <div className="space-y-1.5">
+            <label className="flex items-center gap-2 text-sm font-semibold opacity-80" style={{ color: themeColors.text }}>
+              <FaImage className="text-rose-500" /> Replace Image (Optional)
+            </label>
+            <div 
+              className="relative w-full h-32 rounded-2xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-gray-50 bg-opacity-30 group"
+              style={{ borderColor: themeColors.border, backgroundColor: themeColors.surface }}
+              onClick={() => document.getElementById('swal-edit-sliderImage').click()}
+            >
+              <input
+                id="swal-edit-sliderImage"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  if (e.target.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                      const img = document.getElementById('edit-image-preview');
+                      const ph = document.getElementById('edit-upload-placeholder');
+                      if (img) {
+                        img.src = event.target.result;
+                        img.classList.remove('hidden');
+                        ph.classList.add('hidden');
+                      }
+                    };
+                    reader.readAsDataURL(e.target.files[0]);
+                  }
+                }}
+              />
+              <div id="edit-upload-placeholder" className="flex flex-col items-center text-muted group-hover:text-blue-500 transition-colors">
+                <FaImage className="text-2xl mb-1 opacity-50" />
+                <p className="text-[10px] font-medium">Click to select new banner</p>
+              </div>
               <img
                 id="edit-image-preview"
                 alt="Preview"
-                className="w-full h-32 object-cover rounded-lg border hidden"
-                style={{ borderColor: themeColors.border }}
+                className="absolute inset-0 w-full h-full object-cover rounded-2xl hidden"
               />
             </div>
           </div>
@@ -403,14 +489,25 @@ export default function Sliders() {
       confirmButtonColor: themeColors.primary || '#3B82F6',
       cancelButtonColor: themeColors.border || '#6B7280',
       background: themeColors.background,
-      width: '700px',
+      width: '740px',
+      padding: '2rem',
+      customClass: {
+        popup: 'rounded-[2rem]',
+        confirmButton: 'rounded-xl px-8 py-3 font-bold shadow-lg shadow-blue-500/20',
+        cancelButton: 'rounded-xl px-8 py-3 font-bold'
+      },
       preConfirm: async () => {
         const title = document.getElementById('swal-edit-title').value;
         const subtitle = document.getElementById('swal-edit-subtitle').value;
-        const redirectUrl = document.getElementById('swal-edit-redirectUrl').value;
+        let redirectUrl = document.getElementById('swal-edit-redirectUrl').value;
         const sortOrder = document.getElementById('swal-edit-sortOrder').value;
         const isActive = document.getElementById('swal-edit-isActive').value === 'true';
         const sliderImage = document.getElementById('swal-edit-sliderImage').files[0];
+
+        // Smart Redirect Logic
+        if (redirectUrl && !redirectUrl.startsWith('/') && !redirectUrl.startsWith('http')) {
+          redirectUrl = `/products?category=${redirectUrl}`;
+        }
 
         // Validation
         if (!title || !subtitle || !redirectUrl) {

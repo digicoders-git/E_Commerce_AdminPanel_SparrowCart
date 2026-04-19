@@ -147,7 +147,7 @@ export default function DeliveryBoys() {
                     backgroundColor: themeColors.background,
                     color: themeColors.text
                   }}
-                  placeholder="Enter full name"
+                  placeholder="e.g. Rahul Sharma (Tech Courier)"
                 />
               </div>
 
@@ -164,7 +164,7 @@ export default function DeliveryBoys() {
                     backgroundColor: themeColors.background,
                     color: themeColors.text
                   }}
-                  placeholder="Enter 10-digit phone number"
+                  placeholder="e.g. 9876543210"
                 />
               </div>
 
@@ -181,7 +181,7 @@ export default function DeliveryBoys() {
                     backgroundColor: themeColors.background,
                     color: themeColors.text
                   }}
-                  placeholder="Enter email address"
+                  placeholder="e.g. rahul.delivery@electronics.com"
                 />
               </div>
             </div>
@@ -203,7 +203,7 @@ export default function DeliveryBoys() {
                     backgroundColor: themeColors.background,
                     color: themeColors.text
                   }}
-                  placeholder="Enter complete address"
+                  placeholder="e.g. Tech Park, Building 4, Electronics City"
                 />
               </div>
 
@@ -221,7 +221,7 @@ export default function DeliveryBoys() {
                       backgroundColor: themeColors.background,
                       color: themeColors.text
                     }}
-                    placeholder="City"
+                    placeholder="e.g. Mumbai"
                   />
                 </div>
                 <div>
@@ -237,7 +237,7 @@ export default function DeliveryBoys() {
                       backgroundColor: themeColors.background,
                       color: themeColors.text
                     }}
-                    placeholder="State"
+                    placeholder="e.g. Maharashtra"
                   />
                 </div>
               </div>
@@ -255,7 +255,7 @@ export default function DeliveryBoys() {
                     backgroundColor: themeColors.background,
                     color: themeColors.text
                   }}
-                  placeholder="Enter 6-digit pincode"
+                  placeholder="e.g. 400001"
                 />
               </div>
             </div>

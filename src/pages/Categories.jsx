@@ -126,7 +126,7 @@ export default function Categories() {
               id="swal-title"
               type="text"
               className="w-full p-2 rounded-lg border"
-              placeholder="e.g., Electrician, Plumber, Milk, etc."
+              placeholder="e.g. Smartphones, Laptops, Audio, Gaming"
               style={{
                 borderColor: themeColors.border,
                 backgroundColor: themeColors.background,
@@ -303,7 +303,7 @@ export default function Categories() {
               type="text"
               className="w-full p-2 rounded-lg border"
               defaultValue={category?.title || ''}
-              placeholder="e.g., Electrician, Plumber, Milk, etc."
+              placeholder="e.g. Smartphones, Laptops, Audio, Gaming"
               style={{
                 borderColor: themeColors.border,
                 backgroundColor: themeColors.background,
