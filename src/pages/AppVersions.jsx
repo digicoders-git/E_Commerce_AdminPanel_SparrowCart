@@ -885,14 +885,6 @@ export default function AppVersions() {
         </div>
       )}
 
-      {/* Footer Info */}
-      <div className="text-center text-sm opacity-70" style={{ color: themeColors.text }}>
-        <p>
-          Showing {filteredVersions.length} of {versions.length} versions •
-          Sorted by: {sortByDate === "desc" ? "Newest First" : "Oldest First"} •
-          Last updated: {lastUpdated ? lastUpdated.toLocaleString() : '—'}
-        </p>
-      </div>
     </div>
   );
 }

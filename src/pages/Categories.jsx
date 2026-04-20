@@ -739,38 +739,38 @@ export default function Categories() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="rounded-xl p-4 border" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
+        <div className="rounded-2xl p-5 border shadow-sm hover:shadow-md transition-all group" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm opacity-70" style={{ color: themeColors.text }}>Total Categories</p>
-              <p className="text-2xl font-bold" style={{ color: themeColors.text }}>{stats.total}</p>
+              <p className="text-xs font-bold uppercase tracking-widest opacity-60 mb-1" style={{ color: themeColors.text }}>Total Categories</p>
+              <p className="text-3xl font-black" style={{ color: themeColors.text }}>{stats.total}</p>
             </div>
-            <div className="p-3 rounded-full" style={{ backgroundColor: themeColors.primary + '20', color: themeColors.primary }}>
-              <FaFolder size={24} />
+            <div className="p-4 rounded-2xl bg-blue-500 shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform">
+              <FaFolder size={24} className="text-white" />
             </div>
           </div>
         </div>
 
-        <div className="rounded-xl p-4 border" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
+        <div className="rounded-2xl p-5 border shadow-sm hover:shadow-md transition-all group" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm opacity-70" style={{ color: themeColors.text }}>Active Categories</p>
-              <p className="text-2xl font-bold" style={{ color: themeColors.text }}>{stats.active}</p>
+              <p className="text-xs font-bold uppercase tracking-widest opacity-60 mb-1" style={{ color: themeColors.text }}>Active</p>
+              <p className="text-3xl font-black text-green-600">{stats.active}</p>
             </div>
-            <div className="p-3 rounded-full" style={{ backgroundColor: '#10B98120', color: '#10B981' }}>
-              <FaList size={24} />
+            <div className="p-4 rounded-2xl bg-green-500 shadow-lg shadow-green-500/20 group-hover:scale-110 transition-transform">
+              <FaCheckCircle size={24} className="text-white" />
             </div>
           </div>
         </div>
 
-        <div className="rounded-xl p-4 border" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
+        <div className="rounded-2xl p-5 border shadow-sm hover:shadow-md transition-all group" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm opacity-70" style={{ color: themeColors.text }}>Inactive Categories</p>
-              <p className="text-2xl font-bold" style={{ color: themeColors.text }}>{stats.inactive}</p>
+              <p className="text-xs font-bold uppercase tracking-widest opacity-60 mb-1" style={{ color: themeColors.text }}>Inactive</p>
+              <p className="text-3xl font-black text-orange-600">{stats.inactive}</p>
             </div>
-            <div className="p-3 rounded-full" style={{ backgroundColor: '#F59E0B20', color: '#F59E0B' }}>
-              <FaBox size={24} />
+            <div className="p-4 rounded-2xl bg-orange-500 shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
+              <FaTimesCircle size={24} className="text-white" />
             </div>
           </div>
         </div>
@@ -919,14 +919,6 @@ export default function Categories() {
         </div>
       )}
 
-      {/* Footer Info */}
-      <div className="text-center text-sm opacity-70" style={{ color: themeColors.text }}>
-        <p>
-          Showing {filteredCategories.length} of {categories.length} categories •
-          Sorted by: {sortByDate === "desc" ? "Newest First" : "Oldest First"} •
-          Last updated: {lastUpdated ? lastUpdated.toLocaleString() : '—'}
-        </p>
-      </div>
     </div>
   );
 }

@@ -316,54 +316,40 @@ export default function AdminDashboard() {
         title: "Total Users",
         value: formatNumber(summary.users?.total || 0),
         change: `${summary.users?.growth || 0}%`,
-        icon: <FaUsers className="text-2xl" />,
+        icon: <FaUsers className="text-2xl text-white" />,
         color: "bg-blue-500",
-        iconColor: "text-blue-500",
         details: `${formatNumber(summary.users?.active || 0)} active, ${formatNumber(summary.users?.blocked || 0)} blocked`,
-      },
-      {
-        title: "Total Stores",
-        value: formatNumber(summary.stores?.total || 0),
-        change: `${summary.stores?.growth || 0}%`,
-        icon: <FaStore className="text-2xl" />,
-        color: "bg-green-500",
-        iconColor: "text-green-500",
-        details: `${formatNumber(summary.stores?.active || 0)} active, ${formatNumber(summary.stores?.blocked || 0)} blocked`,
       },
       {
         title: "Total Products",
         value: formatNumber(summary.products?.total || 0),
         change: `${summary.products?.growth || 0}%`,
-        icon: <FaBoxOpen className="text-2xl" />,
+        icon: <FaBoxOpen className="text-2xl text-white" />,
         color: "bg-purple-500",
-        iconColor: "text-purple-500",
         details: `${formatNumber(summary.products?.active || 0)} active, ${formatNumber(summary.products?.blocked || 0)} blocked`,
       },
       {
         title: "Total Orders",
         value: formatNumber(summary.orders?.total || 0),
         change: `${summary.orders?.growth || 0}%`,
-        icon: <FaShoppingCart className="text-2xl" />,
+        icon: <FaShoppingCart className="text-2xl text-white" />,
         color: "bg-orange-500",
-        iconColor: "text-orange-500",
         details: `${formatNumber((dashboardData.dashboard.orders?.status?.delivered || 0))} delivered`,
       },
       {
         title: "Total Revenue",
         value: formatCurrency(revenue.total || 0),
         change: revenue.today ? `Today: ${formatCurrency(revenue.today || 0)}` : null,
-        icon: <FaRupeeSign className="text-2xl" />,
+        icon: <FaRupeeSign className="text-2xl text-white" />,
         color: "bg-teal-500",
-        iconColor: "text-teal-500",
         details: `Avg Order: ${formatCurrency(revenue.averageOrderValue || 0)}`,
       },
       {
         title: "Categories",
         value: formatNumber(summary.categories?.total || 0),
         change: `${summary.categories?.growth || 0}%`,
-        icon: <FaTags className="text-2xl" />,
+        icon: <FaTags className="text-2xl text-white" />,
         color: "bg-pink-500",
-        iconColor: "text-pink-500",
         details: `${formatNumber(summary.categories?.active || 0)} active`,
       },
     ];
@@ -379,28 +365,28 @@ export default function AdminDashboard() {
       {
         title: "Low Stock Products",
         value: alerts.lowStockProducts || 0,
-        icon: <FaExclamationTriangle className="text-lg" />,
+        icon: <FaExclamationTriangle className="text-lg text-white" />,
         color: "bg-red-500",
         severity: alerts.lowStockProducts > 10 ? "high" : alerts.lowStockProducts > 5 ? "medium" : "low",
       },
       {
         title: "Pending Orders",
-        value: (dashboardData.dashboard.orders?.status?.pending || 0) + (dashboardData.dashboard.orders?.payment?.pending || 0),
-        icon: <FaRegClock className="text-lg" />,
-        color: "bg-yellow-500",
+        value: alerts.pendingOrders || 0,
+        icon: <FaRegClock className="text-lg text-white" />,
+        color: "bg-orange-500",
         severity: "medium",
       },
       {
         title: "Blocked Users",
         value: alerts.blockedUsers || 0,
-        icon: <FaUserTimes className="text-lg" />,
+        icon: <FaUserTimes className="text-lg text-white" />,
         color: "bg-red-500",
         severity: "low",
       },
       {
         title: "Successful Orders",
         value: dashboardData.dashboard.orders?.status?.delivered || 0,
-        icon: <FaCheckCircle className="text-lg" />,
+        icon: <FaCheckCircle className="text-lg text-white" />,
         color: "bg-green-500",
         severity: "success",
       },
@@ -483,11 +469,10 @@ export default function AdminDashboard() {
             <button
               key={period}
               onClick={() => handlePeriodChange(period)}
-              className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
-                activePeriod === period
+              className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${activePeriod === period
                   ? "bg-blue-500 text-white"
                   : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
-              }`}
+                }`}
             >
               {period.charAt(0).toUpperCase() + period.slice(1)}
             </button>
@@ -496,39 +481,45 @@ export default function AdminDashboard() {
       </div>
 
       {/* Summary Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
         {summaryCards.map((card, index) => (
           <div
             key={index}
-            className="rounded-2xl p-4 border shadow-sm"
+            className="rounded-2xl p-5 border shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group"
             style={{
               backgroundColor: themeColors.surface,
               borderColor: themeColors.border,
             }}
           >
-            <div className="flex items-center justify-between mb-3">
-              <div className={`p-2 rounded-lg ${card.color} bg-opacity-10`}>
-                <div className={card.iconColor}>{card.icon}</div>
+            <div className="flex items-center justify-between mb-5">
+              <div className={`p-4 rounded-2xl ${card.color} shadow-lg group-hover:scale-110 transition-transform flex items-center justify-center`}>
+                {card.icon}
               </div>
-              <span
-                className={`text-xs font-semibold px-2 py-1 rounded-full ${
-                  card.change?.includes("-")
-                    ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
-                    : "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                }`}
-              >
-                {card.change}
-              </span>
+              <div className="flex flex-col items-end">
+                <span
+                  className={`text-xs font-bold px-2.5 py-1 rounded-lg ${
+                    card.change?.includes("-")
+                      ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                      : "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                  }`}
+                >
+                  {card.change}
+                </span>
+              </div>
             </div>
-            <h3 className="text-sm font-medium opacity-75 mb-1" style={{ color: themeColors.text }}>
-              {card.title}
-            </h3>
-            <p className="text-2xl font-bold mb-2" style={{ color: themeColors.text }}>
-              {card.value}
-            </p>
-            <p className="text-xs opacity-60" style={{ color: themeColors.text }}>
-              {card.details}
-            </p>
+            <div>
+              <h3 className="text-xs font-bold uppercase tracking-widest opacity-60 mb-1" style={{ color: themeColors.text }}>
+                {card.title}
+              </h3>
+              <p className="text-3xl font-black" style={{ color: themeColors.text }}>
+                {card.value}
+              </p>
+              <div className="mt-4 pt-3 border-t border-dashed" style={{ borderColor: themeColors.border }}>
+                <p className="text-xs opacity-70 font-semibold" style={{ color: themeColors.text }}>
+                  {card.details}
+                </p>
+              </div>
+            </div>
           </div>
         ))}
       </div>
@@ -544,20 +535,19 @@ export default function AdminDashboard() {
               borderColor: themeColors.border,
             }}
           >
-            <div className="flex items-center justify-between mb-3">
-              <div className={`p-2 rounded-lg ${alert.color} bg-opacity-10`}>
-                <div className={`${alert.color.replace("bg-", "text-")}`}>{alert.icon}</div>
+            <div className="flex items-center justify-between mb-4">
+              <div className={`p-3 rounded-xl ${alert.color} shadow-sm flex items-center justify-center`}>
+                {alert.icon}
               </div>
               <span
-                className={`text-xs font-semibold px-2 py-1 rounded-full ${
-                  alert.severity === "high"
+                className={`text-xs font-semibold px-2 py-1 rounded-full ${alert.severity === "high"
                     ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
                     : alert.severity === "medium"
-                    ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-                    : alert.severity === "success"
-                    ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                    : "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
-                }`}
+                      ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                      : alert.severity === "success"
+                        ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                        : "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                  }`}
               >
                 {alert.severity === "high" ? "High" : alert.severity === "medium" ? "Medium" : alert.severity === "success" ? "Success" : "Low"}
               </span>

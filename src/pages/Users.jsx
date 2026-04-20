@@ -3,20 +3,20 @@ import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { 
-  FaTrash, 
-  FaEye, 
-  FaEdit, 
-  FaBan, 
-  FaUnlock, 
-  FaSearch, 
-  FaSync, 
-  FaUser, 
-  FaEnvelope, 
-  FaPhone, 
-  FaMapMarkerAlt, 
-  FaCity, 
-  FaGlobe, 
+import {
+  FaTrash,
+  FaEye,
+  FaEdit,
+  FaBan,
+  FaUnlock,
+  FaSearch,
+  FaSync,
+  FaUser,
+  FaEnvelope,
+  FaPhone,
+  FaMapMarkerAlt,
+  FaCity,
+  FaGlobe,
   FaCalendar,
   FaIdCard,
   FaVenusMars,
@@ -117,15 +117,15 @@ export default function Users() {
       setViewLoading(true);
       const res = await getUserAPI(user._id);
       const userData = res?.data?.user || {};
-      
+
       MySwal.fire({
         title: <div className="text-xl font-bold" style={{ color: themeColors.text }}>User Details</div>,
         html: (
           <div className="text-left space-y-3" style={{ color: themeColors.text }}>
             <div className="flex items-center gap-4 mb-4">
               {userData.profileImageUrl ? (
-                <img 
-                  src={userData.profileImageUrl} 
+                <img
+                  src={userData.profileImageUrl}
                   alt={userData.fullName}
                   className="w-24 h-24 rounded-full object-cover border-2"
                   style={{ borderColor: themeColors.primary }}
@@ -138,9 +138,8 @@ export default function Users() {
               )}
               <div>
                 <h3 className="text-xl font-bold">{userData.fullName || "N/A"}</h3>
-                <div className={`px-2 py-1 rounded-full text-xs inline-block mt-1 ${
-                  userData.isBlocked ? "bg-red-100 text-red-800" : "bg-green-100 text-green-800"
-                }`}>
+                <div className={`px-2 py-1 rounded-full text-xs inline-block mt-1 ${userData.isBlocked ? "bg-red-100 text-red-800" : "bg-green-100 text-green-800"
+                  }`}>
                   {userData.isBlocked ? "Blocked" : "Active"}
                 </div>
               </div>
@@ -324,7 +323,7 @@ export default function Users() {
   // Block / Unblock user with confirmation
   const toggleBlock = async (user) => {
     const toBlock = !user.isBlocked;
-    
+
     const result = await MySwal.fire({
       title: <div style={{ color: themeColors.text }}>
         {toBlock ? 'Block User' : 'Unblock User'}
@@ -473,7 +472,7 @@ export default function Users() {
             </div>
           </div>
         </div>
-        
+
         <div className="rounded-xl p-4 border" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
           <div className="flex items-center justify-between">
             <div>
@@ -485,7 +484,7 @@ export default function Users() {
             </div>
           </div>
         </div>
-        
+
         <div className="rounded-xl p-4 border" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
           <div className="flex items-center justify-between">
             <div>
@@ -547,8 +546,8 @@ export default function Users() {
                       <div className="flex items-center gap-3">
                         <div className="relative">
                           {u.profileImageUrl ? (
-                            <img 
-                              src={u.profileImageUrl} 
+                            <img
+                              src={u.profileImageUrl}
                               alt={u.fullName}
                               className="w-10 h-10 rounded-full object-cover"
                             />
@@ -579,11 +578,10 @@ export default function Users() {
                       </p>
                     </td>
                     <td className="px-4 py-3">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        u.isBlocked 
-                          ? "bg-red-100 text-red-800" 
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${u.isBlocked
+                          ? "bg-red-100 text-red-800"
                           : "bg-green-100 text-green-800"
-                      }`}>
+                        }`}>
                         {u.isBlocked ? "Blocked" : "Active"}
                       </span>
                     </td>
@@ -614,9 +612,9 @@ export default function Users() {
                           onClick={() => toggleBlock(u)}
                           disabled={actionLoadingId === u._id}
                           className="p-2 rounded-lg hover:bg-opacity-20 transition-colors"
-                          style={{ 
-                            backgroundColor: u.isBlocked ? '#10B98120' : '#EF444420', 
-                            color: u.isBlocked ? '#10B981' : '#EF4444' 
+                          style={{
+                            backgroundColor: u.isBlocked ? '#10B98120' : '#EF444420',
+                            color: u.isBlocked ? '#10B981' : '#EF4444'
                           }}
                           title={u.isBlocked ? "Unblock User" : "Block User"}
                         >
@@ -657,10 +655,6 @@ export default function Users() {
         </div>
       </div>
 
-      {/* Footer Info */}
-      <div className="text-center text-sm opacity-70" style={{ color: themeColors.text }}>
-        <p>Showing {filtered.length} of {users.length} users • Last updated: {new Date().toLocaleTimeString()}</p>
-      </div>
     </div>
   );
 }

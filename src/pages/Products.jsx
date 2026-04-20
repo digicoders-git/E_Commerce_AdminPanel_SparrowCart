@@ -75,16 +75,16 @@ export default function Products() {
         getAllCategoriesAPI(),
         getAllStoresAPI()
       ]);
-      
+
       const productsData = productsRes?.data?.products || [];
       setProducts(productsData);
       setCategories(categoriesRes?.data?.categories || []);
       const storesData = storesRes?.data?.stores || [];
       setStores(storesData);
-      
+
       // Fetch products for each store to get assignment data
       await fetchStoreProductsData(storesData, productsData);
-      
+
       setLastUpdated(new Date());
     } catch (err) {
       console.error("Error fetching data:", err);
@@ -101,7 +101,7 @@ export default function Products() {
   // Fetch products for each store
   const fetchStoreProductsData = async (storesList, allProducts) => {
     const storeProductsMap = {};
-    
+
     // Create initial mapping
     storesList.forEach(store => {
       storeProductsMap[store._id] = {
@@ -115,7 +115,7 @@ export default function Products() {
       try {
         const response = await getStoreProductsAPI(store._id);
         const storeData = response?.data;
-        
+
         if (storeData && storeData.products) {
           // Map product data with additional assignment info
           const productsWithAssignment = storeData.products.map(product => ({
@@ -124,7 +124,7 @@ export default function Products() {
             storeId: store._id,
             storeName: store.storeName
           }));
-          
+
           storeProductsMap[store._id] = {
             store: storeData.store || store,
             products: productsWithAssignment
@@ -135,14 +135,14 @@ export default function Products() {
         // Keep empty products array if fetch fails
       }
     }
-    
+
     setStoreProductsData(storeProductsMap);
   };
 
   // Get assigned stores for a product
   const getAssignedStoresForProduct = (productId) => {
     const assignedStores = [];
-    
+
     Object.entries(storeProductsData).forEach(([storeId, storeData]) => {
       const hasProduct = storeData.products.some(p => p._id === productId);
       if (hasProduct) {
@@ -154,14 +154,14 @@ export default function Products() {
         });
       }
     });
-    
+
     return assignedStores;
   };
 
   // Get product with assigned stores info
   const getProductWithStores = (product) => {
     if (!product) return product;
-    
+
     const assignedStores = getAssignedStoresForProduct(product._id);
     return {
       ...product,
@@ -188,7 +188,7 @@ export default function Products() {
       const query = search.toLowerCase();
       const productWithStores = getProductWithStores(product);
       const assignedStoreNames = productWithStores.assignedStores?.map(s => s.storeName.toLowerCase()) || [];
-      
+
       return (
         (product._id && product._id.toLowerCase().includes(query)) ||
         (product.name && product.name.toLowerCase().includes(query)) ||
@@ -212,10 +212,10 @@ export default function Products() {
     const loadingKey = `${productId}-${storeId}`;
     const product = products.find(p => p._id === productId);
     const store = stores.find(s => s._id === storeId);
-    
+
     try {
       setStoreAssignmentLoading(prev => ({ ...prev, [loadingKey]: true }));
-      
+
       if (assign) {
         await assignProductToStoreAPI(storeId, productId);
         toast.success(`Product "${product?.name}" assigned to "${store?.storeName}" successfully`);
@@ -223,7 +223,7 @@ export default function Products() {
         await unassignProductFromStoreAPI(storeId, productId);
         toast.success(`Product "${product?.name}" unassigned from "${store?.storeName}" successfully`);
       }
-      
+
       // Refresh data
       await fetchData();
     } catch (error) {
@@ -240,7 +240,7 @@ export default function Products() {
 
     const productWithStores = getProductWithStores(product);
     const currentAssignedStoreIds = productWithStores.assignedStores?.map(store => store._id) || [];
-    
+
     MySwal.fire({
       title: <div className="text-xl font-bold" style={{ color: themeColors.text }}>Manage Store Assignment</div>,
       html: (
@@ -261,8 +261,8 @@ export default function Products() {
               <div>
                 <h3 className="font-bold text-lg">{product?.name}</h3>
                 <p className="text-sm opacity-70">
-                  {currentAssignedStoreIds.length > 0 
-                    ? `Assigned to ${currentAssignedStoreIds.length} store(s)` 
+                  {currentAssignedStoreIds.length > 0
+                    ? `Assigned to ${currentAssignedStoreIds.length} store(s)`
                     : 'Not assigned to any stores'}
                 </p>
               </div>
@@ -280,13 +280,12 @@ export default function Products() {
                 const isAssigned = currentAssignedStoreIds.includes(store._id);
                 const isLoading = storeAssignmentLoading[`${product._id}-${store._id}`];
                 const isStoreActive = store.isActive;
-                
+
                 return (
                   <div
                     key={store._id}
-                    className={`p-3 rounded-lg border flex items-center justify-between ${
-                      isAssigned ? 'border-green-500 bg-green-50' : ''
-                    } ${!isStoreActive ? 'opacity-60' : ''}`}
+                    className={`p-3 rounded-lg border flex items-center justify-between ${isAssigned ? 'border-green-500 bg-green-50' : ''
+                      } ${!isStoreActive ? 'opacity-60' : ''}`}
                     style={{ borderColor: themeColors.border }}
                   >
                     <div className="flex items-center gap-3">
@@ -307,11 +306,10 @@ export default function Products() {
                           <FaMapMarkerAlt />
                           <span>{store.location?.city || 'Unknown'}</span>
                           <span>•</span>
-                          <span className={`px-2 py-0.5 rounded-full ${
-                            isStoreActive 
-                              ? 'bg-green-100 text-green-800' 
+                          <span className={`px-2 py-0.5 rounded-full ${isStoreActive
+                              ? 'bg-green-100 text-green-800'
                               : 'bg-red-100 text-red-800'
-                          }`}>
+                            }`}>
                             {isStoreActive ? 'Active' : 'Inactive'}
                           </span>
                           {isAssigned && (
@@ -322,17 +320,16 @@ export default function Products() {
                         </div>
                       </div>
                     </div>
-                    
+
                     <button
                       onClick={async () => {
                         await handleStoreAssignment(product._id, store._id, !isAssigned);
                       }}
                       disabled={isLoading || !isStoreActive}
-                      className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-all ${
-                        isAssigned
+                      className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-all ${isAssigned
                           ? 'bg-red-500 hover:bg-red-600 text-white'
                           : 'bg-green-500 hover:bg-green-600 text-white'
-                      } ${!isStoreActive ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        } ${!isStoreActive ? 'opacity-50 cursor-not-allowed' : ''}`}
                       title={!isStoreActive ? 'Store is inactive' : ''}
                     >
                       {isLoading ? (
@@ -1281,11 +1278,10 @@ export default function Products() {
             <div className="flex-1">
               <p className="font-bold text-xl">{product?.name}</p>
               <div className="flex items-center gap-2 mt-2">
-                <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs ${
-                  product?.isActive
+                <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs ${product?.isActive
                     ? "bg-green-100 text-green-800"
                     : "bg-red-100 text-red-800"
-                }`}>
+                  }`}>
                   {product?.isActive ? <FaCheckCircle /> : <FaTimesCircle />}
                   {product?.isActive ? 'Active' : 'Inactive'}
                 </div>
@@ -1363,11 +1359,10 @@ export default function Products() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-sm opacity-70">Status</p>
-              <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${
-                product?.isActive
+              <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${product?.isActive
                   ? "bg-green-100 text-green-800"
                   : "bg-red-100 text-red-800"
-              }`}>
+                }`}>
                 {product?.isActive ? <FaCheckCircle /> : <FaTimesCircle />}
                 {product?.isActive ? 'Active' : 'Inactive'}
               </div>
@@ -1496,7 +1491,7 @@ export default function Products() {
                   showStoreAssignmentModal(product);
                 }}
                 className="w-full py-2 rounded-lg border flex items-center justify-center gap-2 hover:bg-opacity-10"
-                style={{ 
+                style={{
                   borderColor: themeColors.primary,
                   backgroundColor: themeColors.primary + '20',
                   color: themeColors.primary
@@ -1701,17 +1696,6 @@ export default function Products() {
           </div>
         </div>
 
-        <div className="rounded-xl p-4 border" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm opacity-70" style={{ color: themeColors.text }}>Assigned Stores</p>
-              <p className="text-2xl font-bold" style={{ color: themeColors.text }}>{assignedProductsCount}</p>
-            </div>
-            <div className="p-3 rounded-full" style={{ backgroundColor: '#8B5CF620', color: '#8B5CF6' }}>
-              <FaStore size={24} />
-            </div>
-          </div>
-        </div>
 
         <div className="rounded-xl p-4 border" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
           <div className="flex items-center justify-between">
@@ -1756,7 +1740,7 @@ export default function Products() {
           {filteredProducts.map((product, index) => {
             const productWithStores = getProductWithStores(product);
             const assignedStoresCount = productWithStores.assignedStores?.length || 0;
-            
+
             return (
               <div
                 key={product?._id || `product-${index}`}
@@ -1801,11 +1785,10 @@ export default function Products() {
                   )}
 
                   <div className="absolute top-2 right-2 flex flex-col gap-1">
-                    <div className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      product?.isActive
+                    <div className={`px-2 py-1 rounded-full text-xs font-medium ${product?.isActive
                         ? "bg-green-100 text-green-800"
                         : "bg-red-100 text-red-800"
-                    }`}>
+                      }`}>
                       {product?.isActive ? 'Active' : 'Inactive'}
                     </div>
                     {assignedStoresCount > 0 && (
@@ -1817,13 +1800,12 @@ export default function Products() {
                   </div>
 
                   {/* Stock Status */}
-                  <div className={`absolute bottom-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${
-                    (product?.stockQuantity || 0) <= 0
+                  <div className={`absolute bottom-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${(product?.stockQuantity || 0) <= 0
                       ? 'bg-red-100 text-red-800'
                       : (product?.stockQuantity || 0) < 10
                         ? 'bg-yellow-100 text-yellow-800'
                         : 'bg-green-100 text-green-800'
-                  }`}>
+                    }`}>
                     {product?.stockQuantity <= 0 ? 'Out of Stock' : `${product?.stockQuantity} in stock`}
                   </div>
 
@@ -1961,16 +1943,6 @@ export default function Products() {
         </div>
       )}
 
-      {/* Footer Info */}
-      <div className="text-center text-sm opacity-70" style={{ color: themeColors.text }}>
-        <p>
-          Showing {filteredProducts.length} of {products.length} products •
-          Category: {selectedCategory === "all" ? "All" : categories.find(c => c._id === selectedCategory)?.title} •
-          Sorted by: {sortByDate === "desc" ? "Newest First" : "Oldest First"} •
-          Stores: {stores.length} available •
-          Last updated: {lastUpdated ? lastUpdated.toLocaleString() : '—'}
-        </p>
-      </div>
     </div>
   );
 }

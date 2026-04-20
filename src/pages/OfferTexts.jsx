@@ -14,14 +14,20 @@ import {
   FaSync,
   FaCheckCircle,
   FaTimesCircle,
-  FaCalendar,
-  FaSortAmountDown,
-  FaSortAmountUp,
-  FaTag,
-  FaFont,
   FaCopy,
   FaClipboard,
-  FaTextHeight
+  FaTextHeight,
+  FaDice,
+  FaTicketAlt,
+  FaPercent,
+  FaRupeeSign,
+  FaBolt,
+  FaSortAmountDown,
+  FaSortAmountUp,
+  FaFont,
+  FaTag,
+  FaCalendar,
+  FaHistory
 } from "react-icons/fa";
 import { useTheme } from "../context/ThemeContext";
 import {
@@ -96,23 +102,18 @@ export default function OfferTexts() {
   // Show create offer text modal
   const showCreateModal = () => {
     MySwal.fire({
-      title: <div className="text-xl font-bold" style={{ color: themeColors.text }}>Create Offer Text</div>,
+      background: themeColors.background,
+      width: '650px',
       html: (
-        <div className="space-y-4 text-left">
-          <div className="mb-4">
-            <p className="text-sm opacity-70 mb-2" style={{ color: themeColors.text }}>
-              Create promotional text for offers, banners, or advertisements
-            </p>
-          </div>
-
+        <div className="space-y-4 text-left max-h-[70vh] overflow-y-auto px-1">
           <div>
             <label className="block text-sm font-medium mb-1" style={{ color: themeColors.text }}>
               Offer Text *
             </label>
             <textarea
               id="swal-text"
-              className="w-full p-3 rounded-lg border min-h-[120px]"
-              placeholder="e.g. Flash Sale: Get up to 40% off on all Gaming Laptops this weekend! Use code TECH40."
+              className="w-full p-3 rounded-lg border min-h-[80px]"
+              placeholder="e.g. Flash Sale: Get up to 40% off! Use code TECH40."
               style={{
                 borderColor: themeColors.border,
                 backgroundColor: themeColors.background,
@@ -125,42 +126,53 @@ export default function OfferTexts() {
             </div>
           </div>
 
+          <div className="p-4 border rounded-xl bg-gray-50 bg-opacity-30 space-y-4">
+            <p className="text-sm font-bold border-b pb-1" style={{ color: themeColors.text }}>Coupon Configuration (Optional)</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Coupon Code</label>
+                <div className="flex gap-2">
+                  <input id="swal-couponCode" className="flex-1 p-2 rounded border font-mono uppercase text-sm" placeholder="6-DIGIT CODE" maxLength={6} />
+                  <button type="button" id="swal-gen-btn" className="px-2 py-1 bg-blue-500 text-white rounded text-xs flex items-center gap-1"><FaDice /> Gen</button>
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Discount Type</label>
+                <select id="swal-discountType" className="w-full p-2 rounded border text-sm">
+                  <option value="percentage">Percentage (%)</option>
+                  <option value="fixed">Fixed Amount (₹)</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Discount Value</label>
+                <input id="swal-discountValue" type="number" defaultValue="0" className="w-full p-2 rounded border text-sm" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Usage Limit (Orders)</label>
+                <input id="swal-usageLimit" type="number" defaultValue="0" className="w-full p-2 rounded border text-sm" />
+              </div>
+            </div>
+          </div>
+
           <div>
             <label className="block text-sm font-medium mb-1" style={{ color: themeColors.text }}>Status</label>
             <select
               id="swal-isActive"
               className="w-full p-2 rounded-lg border"
-              style={{
-                borderColor: themeColors.border,
-                backgroundColor: themeColors.background,
-                color: themeColors.text
-              }}
               defaultValue="true"
+              style={{ borderColor: themeColors.border, backgroundColor: themeColors.background, color: themeColors.text }}
             >
-              <option value="true">Active (Visible to users)</option>
-              <option value="false">Inactive (Hidden from users)</option>
+              <option value="true">Active (Visible)</option>
+              <option value="false">Inactive (Hidden)</option>
             </select>
-          </div>
-
-          <div className="text-xs opacity-70 p-3 rounded-lg border" style={{ borderColor: themeColors.border, backgroundColor: themeColors.background + '50' }}>
-            <p className="font-medium mb-1">Tips for effective offer texts:</p>
-            <ul className="list-disc pl-4 space-y-1">
-              <li>Keep it short and impactful</li>
-              <li>Include clear call-to-action</li>
-              <li>Highlight discounts or benefits</li>
-              <li>Use attention-grabbing words</li>
-            </ul>
           </div>
         </div>
       ),
-      showCancelButton: true,
-      confirmButtonText: 'Create Offer Text',
-      cancelButtonText: 'Cancel',
-      confirmButtonColor: themeColors.primary || '#3B82F6',
-      cancelButtonColor: themeColors.border || '#6B7280',
-      background: themeColors.background,
-      width: '600px',
       didOpen: () => {
+        // Char count logic
         const textarea = document.getElementById('swal-text');
         const charCount = document.getElementById('char-count');
         if (textarea && charCount) {
@@ -169,10 +181,26 @@ export default function OfferTexts() {
             charCount.textContent = textarea.value.length;
           });
         }
+
+        // Generate Code Logic
+        const genBtn = document.getElementById('swal-gen-btn');
+        const codeInput = document.getElementById('swal-couponCode');
+        if (genBtn && codeInput) {
+          genBtn.addEventListener('click', () => {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            const code = Array.from({ length: 6 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
+            codeInput.value = code;
+          });
+        }
       },
       preConfirm: async () => {
         const text = document.getElementById('swal-text').value.trim();
         const isActive = document.getElementById('swal-isActive').value === 'true';
+        const couponCode = document.getElementById('swal-couponCode').value.trim();
+        const hasCoupon = !!couponCode;
+        const discountType = document.getElementById('swal-discountType').value;
+        const discountValue = parseFloat(document.getElementById('swal-discountValue').value || 0);
+        const usageLimit = parseInt(document.getElementById('swal-usageLimit').value || 0);
 
         // Validation
         if (!text) {
@@ -180,19 +208,22 @@ export default function OfferTexts() {
           return false;
         }
 
-        if (text.length < 5) {
-          Swal.showValidationMessage('Offer text should be at least 5 characters');
-          return false;
-        }
-
-        if (text.length > 500) {
-          Swal.showValidationMessage('Offer text should not exceed 500 characters');
+        if (hasCoupon && !couponCode) {
+          Swal.showValidationMessage('Please enter a coupon code if coupon is enabled');
           return false;
         }
 
         try {
           setActionLoading(true);
-          const payload = { text, isActive };
+          const payload = { 
+            text, 
+            isActive, 
+            hasCoupon, 
+            couponCode, 
+            discountType, 
+            discountValue, 
+            usageLimit 
+          };
           const res = await createOfferTextAPI(payload);
           return res.data;
         } catch (error) {
@@ -215,24 +246,19 @@ export default function OfferTexts() {
     if (!offerText) return;
 
     MySwal.fire({
-      title: <div className="text-xl font-bold" style={{ color: themeColors.text }}>Edit Offer Text</div>,
+      background: themeColors.background,
+      width: '650px',
       html: (
-        <div className="space-y-4 text-left">
-          <div className="mb-4">
-            <p className="text-sm opacity-70 mb-2" style={{ color: themeColors.text }}>
-              Current text: <span className="font-medium italic">"{offerText?.text}"</span>
-            </p>
-          </div>
-
+        <div className="space-y-4 text-left max-h-[70vh] overflow-y-auto px-1">
           <div>
             <label className="block text-sm font-medium mb-1" style={{ color: themeColors.text }}>
-              New Offer Text *
+              Offer Text *
             </label>
             <textarea
               id="swal-edit-text"
-              className="w-full p-3 rounded-lg border min-h-[120px]"
+              className="w-full p-3 rounded-lg border min-h-[80px]"
               defaultValue={offerText?.text || ''}
-              placeholder="e.g. Flash Sale: Get up to 40% off on all Gaming Laptops this weekend! Use code TECH40."
+              placeholder="e.g. Flash Sale: Get up to 40% off! Use code TECH40."
               style={{
                 borderColor: themeColors.border,
                 backgroundColor: themeColors.background,
@@ -245,32 +271,69 @@ export default function OfferTexts() {
             </div>
           </div>
 
+          <div className="p-4 border rounded-xl bg-gray-50 bg-opacity-30 space-y-4">
+            <p className="text-sm font-bold border-b pb-1" style={{ color: themeColors.text }}>Coupon Configuration</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Coupon Code</label>
+                <div className="flex gap-2">
+                  <input id="swal-edit-couponCode" defaultValue={offerText?.couponCode || ''} className="flex-1 p-2 rounded border font-mono uppercase text-sm" placeholder="6-DIGIT CODE" maxLength={6} />
+                  <button type="button" id="swal-edit-gen-btn" className="px-2 py-1 bg-blue-500 text-white rounded text-xs flex items-center gap-1"><FaDice /> Gen</button>
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Discount Type</label>
+                <select id="swal-edit-discountType" defaultValue={offerText?.discountType || 'percentage'} className="w-full p-2 rounded border text-sm">
+                  <option value="percentage">Percentage (%)</option>
+                  <option value="fixed">Fixed Amount (₹)</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Discount Value</label>
+                <input id="swal-edit-discountValue" type="number" defaultValue={offerText?.discountValue || 0} className="w-full p-2 rounded border text-sm" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Usage Limit (Orders)</label>
+                <input id="swal-edit-usageLimit" type="number" defaultValue={offerText?.usageLimit || 0} className="w-full p-2 rounded border text-sm" />
+              </div>
+            </div>
+            <div className="bg-blue-50 p-3 rounded-lg border flex items-center justify-between" style={{ borderColor: themeColors.border }}>
+               <div className="text-sm">
+                 <span className="opacity-70">Total Usage:</span> <strong className="text-blue-700">{offerText?.usageCount || 0}</strong>
+                 {offerText?.usageLimit > 0 && <span className="opacity-70 ml-1">/ {offerText.usageLimit}</span>}
+               </div>
+               <div className="w-20 bg-gray-200 rounded-full h-1.5 overflow-hidden">
+                  <div 
+                    className="bg-blue-500 h-full transition-all" 
+                    style={{ 
+                      width: offerText?.usageLimit > 0 
+                        ? `${Math.min(100, (offerText.usageCount / offerText.usageLimit) * 100)}%` 
+                        : '0%' 
+                    }}
+                  />
+               </div>
+            </div>
+          </div>
+
           <div>
             <label className="block text-sm font-medium mb-1" style={{ color: themeColors.text }}>Status</label>
             <select
               id="swal-edit-isActive"
               className="w-full p-2 rounded-lg border"
               defaultValue={offerText?.isActive ? "true" : "false"}
-              style={{
-                borderColor: themeColors.border,
-                backgroundColor: themeColors.background,
-                color: themeColors.text
-              }}
+              style={{ borderColor: themeColors.border, backgroundColor: themeColors.background, color: themeColors.text }}
             >
-              <option value="true">Active (Visible to users)</option>
-              <option value="false">Inactive (Hidden from users)</option>
+              <option value="true">Active (Visible)</option>
+              <option value="false">Inactive (Hidden)</option>
             </select>
           </div>
         </div>
       ),
-      showCancelButton: true,
-      confirmButtonText: 'Update Offer Text',
-      cancelButtonText: 'Cancel',
-      confirmButtonColor: themeColors.primary || '#3B82F6',
-      cancelButtonColor: themeColors.border || '#6B7280',
-      background: themeColors.background,
-      width: '600px',
       didOpen: () => {
+        // Char count logic
         const textarea = document.getElementById('swal-edit-text');
         const charCount = document.getElementById('edit-char-count');
         if (textarea && charCount) {
@@ -279,10 +342,26 @@ export default function OfferTexts() {
             charCount.textContent = textarea.value.length;
           });
         }
+
+        // Generate Code Logic
+        const genBtn = document.getElementById('swal-edit-gen-btn');
+        const codeInput = document.getElementById('swal-edit-couponCode');
+        if (genBtn && codeInput) {
+          genBtn.addEventListener('click', () => {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            const code = Array.from({ length: 6 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
+            codeInput.value = code;
+          });
+        }
       },
       preConfirm: async () => {
         const text = document.getElementById('swal-edit-text').value.trim();
         const isActive = document.getElementById('swal-edit-isActive').value === 'true';
+        const couponCode = document.getElementById('swal-edit-couponCode').value.trim();
+        const hasCoupon = !!couponCode;
+        const discountType = document.getElementById('swal-edit-discountType').value;
+        const discountValue = parseFloat(document.getElementById('swal-edit-discountValue').value || 0);
+        const usageLimit = parseInt(document.getElementById('swal-edit-usageLimit').value || 0);
 
         // Validation
         if (!text) {
@@ -290,19 +369,22 @@ export default function OfferTexts() {
           return false;
         }
 
-        if (text.length < 5) {
-          Swal.showValidationMessage('Offer text should be at least 5 characters');
-          return false;
-        }
-
-        if (text.length > 500) {
-          Swal.showValidationMessage('Offer text should not exceed 500 characters');
+        if (hasCoupon && !couponCode) {
+          Swal.showValidationMessage('Please enter a coupon code if coupon is enabled');
           return false;
         }
 
         try {
           setActionLoading(true);
-          const payload = { text, isActive };
+          const payload = { 
+            text, 
+            isActive, 
+            hasCoupon, 
+            couponCode, 
+            discountType, 
+            discountValue, 
+            usageLimit 
+          };
           const res = await updateOfferTextAPI(offerText?._id, payload);
           return res.data;
         } catch (error) {
@@ -378,11 +460,10 @@ export default function OfferTexts() {
         <div className="my-3 p-3 rounded-lg border bg-red-50" style={{ borderColor: themeColors.border }}>
           <p className="font-medium text-lg">"{offerText?.text}"</p>
           <div className="mt-2 text-center">
-            <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm ${
-              offerText?.isActive
+            <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm ${offerText?.isActive
                 ? "bg-green-100 text-green-800"
                 : "bg-red-100 text-red-800"
-            }`}>
+              }`}>
               {offerText?.isActive ? <FaCheckCircle /> : <FaTimesCircle />}
               {offerText?.isActive ? 'Active' : 'Inactive'}
             </div>
@@ -441,11 +522,10 @@ export default function OfferTexts() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-sm opacity-70">Status</p>
-              <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${
-                offerText?.isActive
+              <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${offerText?.isActive
                   ? "bg-green-100 text-green-800"
                   : "bg-red-100 text-red-800"
-              }`}>
+                }`}>
                 {offerText?.isActive ? <FaCheckCircle /> : <FaTimesCircle />}
                 {offerText?.isActive ? 'Active' : 'Inactive'}
               </div>
@@ -473,6 +553,41 @@ export default function OfferTexts() {
             </div>
           </div>
 
+          {offerText?.hasCoupon && (
+            <div className="p-4 rounded-xl border bg-gray-50 space-y-3" style={{ borderColor: themeColors.border }}>
+              <p className="font-bold border-b pb-1">Coupon Configuration</p>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs opacity-70">Coupon Code</p>
+                  <p className="font-mono font-bold text-blue-600">{offerText.couponCode}</p>
+                </div>
+                <div>
+                  <p className="text-xs opacity-70">Discount</p>
+                  <p className="font-bold">
+                    {offerText.discountType === 'percentage' ? `${offerText.discountValue}%` : `₹${offerText.discountValue}`}
+                  </p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs opacity-70">Min Order</p>
+                  <p className="font-medium">₹{offerText.minOrderAmount || 0}</p>
+                </div>
+                <div>
+                  <p className="text-xs opacity-70">Max Cap</p>
+                  <p className="font-medium">₹{offerText.maxDiscount || 'No cap'}</p>
+                </div>
+              </div>
+              <div className="p-2 rounded bg-blue-100 flex items-center justify-between">
+                <div>
+                   <p className="text-xs opacity-70">Usage</p>
+                   <p className="font-bold">{offerText.usageCount} / {offerText.usageLimit || '∞'}</p>
+                </div>
+                <FaBolt className="text-blue-500" />
+              </div>
+            </div>
+          )}
+
           {offerText?._id && (
             <div className="text-xs opacity-70 border-t pt-2" style={{ borderColor: themeColors.border }}>
               <div className="flex items-center justify-between">
@@ -496,11 +611,27 @@ export default function OfferTexts() {
     });
   };
 
-  // Stats
+  // Advanced Stats Calculation
   const stats = {
     total: offerTexts?.length || 0,
     active: (offerTexts || []).filter(o => o?.isActive).length,
-    inactive: (offerTexts || []).filter(o => !o?.isActive).length,
+    coupons: (offerTexts || []).filter(o => o?.isActive && (o?.hasCoupon || o?.couponCode)).length,
+    totalUsed: (offerTexts || []).reduce((acc, o) => acc + (Number(o?.usageCount) || 0), 0),
+    totalLimit: (offerTexts || []).reduce((acc, o) => acc + (Number(o?.usageLimit) || 0), 0),
+    remaining: (offerTexts || []).reduce((acc, o) => {
+      const limit = Number(o?.usageLimit) || 0;
+      const count = Number(o?.usageCount) || 0;
+      if ((o?.hasCoupon || o?.couponCode) && limit > 0) {
+        return acc + Math.max(0, limit - count);
+      }
+      return acc;
+    }, 0),
+    exhausted: (offerTexts || []).filter(o => {
+      const limit = Number(o?.usageLimit) || 0;
+      const count = Number(o?.usageCount) || 0;
+      return (o?.hasCoupon || o?.couponCode) && limit > 0 && count >= limit;
+    }).length,
+    unlimited: (offerTexts || []).some(o => (o?.hasCoupon || o?.couponCode) && !o?.usageLimit)
   };
 
   return (
@@ -575,40 +706,66 @@ export default function OfferTexts() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="rounded-xl p-4 border" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Active Coupons */}
+        <div className="rounded-2xl p-5 border transition-all hover:shadow-md" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm opacity-70" style={{ color: themeColors.text }}>Total Texts</p>
-              <p className="text-2xl font-bold" style={{ color: themeColors.text }}>{stats.total}</p>
+              <p className="text-xs uppercase tracking-wider font-bold opacity-60" style={{ color: themeColors.text }}>Active Coupons</p>
+              <p className="text-3xl font-extrabold mt-1" style={{ color: '#10B981' }}>{stats.coupons}</p>
             </div>
-            <div className="p-3 rounded-full" style={{ backgroundColor: themeColors.primary + '20', color: themeColors.primary }}>
-              <FaFont size={24} />
+            <div className="p-4 rounded-2xl bg-green-50 text-green-500">
+              <FaTicketAlt size={28} />
             </div>
           </div>
+          <div className="mt-4 text-xs opacity-60">Out of {stats.total} total offers</div>
         </div>
 
-        <div className="rounded-xl p-4 border" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
+        {/* Total Usage */}
+        <div className="rounded-2xl p-5 border transition-all hover:shadow-md" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm opacity-70" style={{ color: themeColors.text }}>Active Texts</p>
-              <p className="text-2xl font-bold" style={{ color: themeColors.text }}>{stats.active}</p>
+              <p className="text-xs uppercase tracking-wider font-bold opacity-60" style={{ color: themeColors.text }}>Total Used</p>
+              <p className="text-3xl font-extrabold mt-1" style={{ color: themeColors.primary }}>{stats.totalUsed}</p>
             </div>
-            <div className="p-3 rounded-full" style={{ backgroundColor: '#10B98120', color: '#10B981' }}>
-              <FaTag size={24} />
+            <div className="p-4 rounded-2xl bg-blue-50 text-blue-500">
+              <FaHistory size={28} />
             </div>
           </div>
+          <div className="mt-4 text-xs opacity-60 font-medium">Across all time</div>
         </div>
 
-        <div className="rounded-xl p-4 border" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
+        {/* Total Capacity */}
+        <div className="rounded-2xl p-5 border transition-all hover:shadow-md" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm opacity-70" style={{ color: themeColors.text }}>Inactive Texts</p>
-              <p className="text-2xl font-bold" style={{ color: themeColors.text }}>{stats.inactive}</p>
+              <p className="text-xs uppercase tracking-wider font-bold opacity-60" style={{ color: themeColors.text }}>Total Capacity</p>
+              <p className="text-3xl font-extrabold mt-1" style={{ color: '#F59E0B' }}>
+                {stats.totalLimit}{stats.unlimited ? '+' : ''}
+              </p>
             </div>
-            <div className="p-3 rounded-full" style={{ backgroundColor: '#F59E0B20', color: '#F59E0B' }}>
-              <FaTimesCircle size={24} />
+            <div className="p-4 rounded-2xl bg-yellow-50 text-yellow-500">
+              <FaTag size={28} />
             </div>
+          </div>
+          <div className="mt-4 text-xs opacity-60 font-medium">Total allowed uses</div>
+        </div>
+
+        {/* Remaining Capacity */}
+        <div className="rounded-2xl p-5 border transition-all hover:shadow-md" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs uppercase tracking-wider font-bold opacity-60" style={{ color: themeColors.text }}>Slots Left</p>
+              <p className="text-3xl font-extrabold mt-1" style={{ color: '#8B5CF6' }}>
+                {stats.remaining}{stats.unlimited ? '+' : ''}
+              </p>
+            </div>
+            <div className="p-4 rounded-2xl bg-purple-50 text-purple-500">
+              <FaBolt size={28} />
+            </div>
+          </div>
+          <div className="mt-4 text-xs uppercase font-bold text-red-500">
+             {stats.exhausted} Expired
           </div>
         </div>
       </div>
@@ -661,11 +818,10 @@ export default function OfferTexts() {
                           <FaCalendar className="text-xs" />
                           <span>{offerText?.createdAt ? new Date(offerText.createdAt).toLocaleDateString() : 'N/A'}</span>
                         </div>
-                        <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs ${
-                          offerText?.isActive
+                        <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs ${offerText?.isActive
                             ? "bg-green-100 text-green-800"
                             : "bg-red-100 text-red-800"
-                        }`}>
+                          }`}>
                           {offerText?.isActive ? <FaCheckCircle /> : <FaTimesCircle />}
                           {offerText?.isActive ? 'Active' : 'Inactive'}
                         </div>
@@ -683,6 +839,21 @@ export default function OfferTexts() {
                       <FaCopy />
                     </button>
                   </div>
+                  
+                  {/* Coupon Info Badge in List */}
+                  {offerText?.hasCoupon && (
+                    <div className="mt-2 flex items-center gap-2 flex-wrap">
+                       <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-600 text-white text-[10px] uppercase font-bold rounded">
+                         <FaTicketAlt /> {offerText.couponCode}
+                       </span>
+                       <span className="px-2 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded">
+                         {offerText.discountType === 'percentage' ? `${offerText.discountValue}%` : `₹${offerText.discountValue}`} OFF
+                       </span>
+                       <span className="px-2 py-1 border border-gray-300 text-gray-600 text-[10px] font-medium rounded flex items-center gap-1">
+                         <FaBolt /> {offerText.usageCount}/{offerText.usageLimit || '∞'}
+                       </span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Actions */}
@@ -748,14 +919,6 @@ export default function OfferTexts() {
         </div>
       )}
 
-      {/* Footer Info */}
-      <div className="text-center text-sm opacity-70" style={{ color: themeColors.text }}>
-        <p>
-          Showing {filteredOfferTexts.length} of {offerTexts.length} offer texts •
-          Sorted by: {sortByDate === "desc" ? "Newest First" : "Oldest First"} •
-          Last updated: {lastUpdated ? lastUpdated.toLocaleString() : '—'}
-        </p>
-      </div>
     </div>
   );
 }

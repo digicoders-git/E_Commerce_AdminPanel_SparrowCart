@@ -1113,87 +1113,87 @@ export default function Orders() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
-        <div className="rounded-xl p-3 border col-span-2" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-9 gap-3">
+        <div className="rounded-xl p-3 border shadow-sm col-span-2 hover:shadow-md transition-all group" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs opacity-70" style={{ color: themeColors.text }}>Total Orders</p>
-              <p className="text-xl md:text-2xl font-bold" style={{ color: themeColors.text }}>{stats.total}</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-0.5" style={{ color: themeColors.text }}>Total Orders</p>
+              <p className="text-xl font-black" style={{ color: themeColors.text }}>{stats.total}</p>
             </div>
-            <div className="p-2 rounded-full" style={{ backgroundColor: themeColors.primary + '20', color: themeColors.primary }}>
-              <FaReceipt size={20} />
+            <div className="p-2 rounded-xl bg-blue-500 shadow-md shadow-blue-500/20 group-hover:scale-110 transition-transform">
+              <FaReceipt size={16} className="text-white" />
             </div>
           </div>
         </div>
 
-        <div className="rounded-xl p-3 border" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
+        <div className="rounded-xl p-3 border shadow-sm hover:shadow-md transition-all group" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs opacity-70" style={{ color: themeColors.text }}>Pending</p>
-              <p className="text-xl font-bold text-yellow-600">{stats.pending}</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-0.5" style={{ color: themeColors.text }}>Pending</p>
+              <p className="text-xl font-black text-yellow-600">{stats.pending}</p>
             </div>
-            <div className="p-2 rounded-full" style={{ backgroundColor: '#F59E0B20', color: '#F59E0B' }}>
-              <FaClock size={16} />
+            <div className="p-2 rounded-xl bg-yellow-500 shadow-md shadow-yellow-500/20 group-hover:scale-110 transition-transform">
+              <FaClock size={16} className="text-white" />
             </div>
           </div>
         </div>
 
-        <div className="rounded-xl p-3 border" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
+        <div className="rounded-xl p-3 border shadow-sm hover:shadow-md transition-all group" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs opacity-70" style={{ color: themeColors.text }}>Confirmed</p>
-              <p className="text-xl font-bold text-blue-600">{stats.confirmed}</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-0.5" style={{ color: themeColors.text }}>Confirmed</p>
+              <p className="text-xl font-black text-blue-600">{stats.confirmed}</p>
             </div>
-            <div className="p-2 rounded-full" style={{ backgroundColor: '#3B82F620', color: '#3B82F6' }}>
-              <FaCheckCircle size={16} />
+            <div className="p-2 rounded-xl bg-blue-600 shadow-md shadow-blue-600/20 group-hover:scale-110 transition-transform">
+              <FaCheckCircle size={16} className="text-white" />
             </div>
           </div>
         </div>
 
-        <div className="rounded-xl p-3 border" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
+        <div className="rounded-xl p-3 border shadow-sm hover:shadow-md transition-all group" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs opacity-70" style={{ color: themeColors.text }}>Shipped</p>
-              <p className="text-xl font-bold text-purple-600">{stats.shipped}</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-0.5" style={{ color: themeColors.text }}>Shipped</p>
+              <p className="text-xl font-black text-purple-600">{stats.shipped}</p>
             </div>
-            <div className="p-2 rounded-full" style={{ backgroundColor: '#8B5CF620', color: '#8B5CF6' }}>
-              <FaTruck size={16} />
+            <div className="p-2 rounded-xl bg-purple-600 shadow-md shadow-purple-600/20 group-hover:scale-110 transition-transform">
+              <FaTruck size={16} className="text-white" />
             </div>
           </div>
         </div>
 
-        <div className="rounded-xl p-3 border" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
+        <div className="rounded-xl p-3 border shadow-sm hover:shadow-md transition-all group" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs opacity-70" style={{ color: themeColors.text }}>Delivered</p>
-              <p className="text-xl font-bold text-green-600">{stats.delivered}</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-0.5" style={{ color: themeColors.text }}>Delivered</p>
+              <p className="text-xl font-black text-green-600">{stats.delivered}</p>
             </div>
-            <div className="p-2 rounded-full" style={{ backgroundColor: '#10B98120', color: '#10B981' }}>
-              <FaCheck size={16} />
+            <div className="p-2 rounded-xl bg-green-600 shadow-md shadow-green-600/20 group-hover:scale-110 transition-transform">
+              <FaCheck size={16} className="text-white" />
             </div>
           </div>
         </div>
 
-        <div className="rounded-xl p-3 border" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
+        <div className="rounded-xl p-3 border shadow-sm hover:shadow-md transition-all group" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs opacity-70" style={{ color: themeColors.text }}>Cancelled</p>
-              <p className="text-xl font-bold text-red-600">{stats.cancelled}</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-0.5" style={{ color: themeColors.text }}>Cancelled</p>
+              <p className="text-xl font-black text-red-600">{stats.cancelled}</p>
             </div>
-            <div className="p-2 rounded-full" style={{ backgroundColor: '#EF444420', color: '#EF4444' }}>
-              <FaBan size={16} />
+            <div className="p-2 rounded-xl bg-red-600 shadow-md shadow-red-600/20 group-hover:scale-110 transition-transform">
+              <FaBan size={16} className="text-white" />
             </div>
           </div>
         </div>
 
-        <div className="rounded-xl p-3 border col-span-2" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
+        <div className="rounded-xl p-3 border shadow-sm col-span-2 hover:shadow-md transition-all group" style={{ backgroundColor: themeColors.surface, borderColor: themeColors.border }}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs opacity-70" style={{ color: themeColors.text }}>Revenue</p>
-              <p className="text-xl font-bold" style={{ color: themeColors.text }}>₹{stats.revenue.toLocaleString()}</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-0.5" style={{ color: themeColors.text }}>Revenue</p>
+              <p className="text-xl font-black" style={{ color: themeColors.text }}>₹{stats.revenue.toLocaleString()}</p>
             </div>
-            <div className="p-2 rounded-full" style={{ backgroundColor: '#10B98120', color: '#10B981' }}>
-              <FaRupeeSign size={16} />
+            <div className="p-2 rounded-xl bg-teal-500 shadow-md shadow-teal-500/20 group-hover:scale-110 transition-transform">
+              <FaRupeeSign size={16} className="text-white" />
             </div>
           </div>
         </div>
@@ -1427,13 +1427,6 @@ export default function Orders() {
         </div>
       )}
 
-      {/* Footer Info */}
-      <div className="text-center text-sm opacity-70" style={{ color: themeColors.text }}>
-        <p>
-          Showing {filteredOrders.length} of {orders.length} orders •
-          Last updated: {lastUpdated ? lastUpdated.toLocaleString() : '—'}
-        </p>
-      </div>
     </div>
   );
 }

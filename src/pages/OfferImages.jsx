@@ -784,14 +784,6 @@ export default function OfferImages() {
         </div>
       )}
 
-      {/* Footer Info */}
-      <div className="text-center text-sm opacity-70" style={{ color: themeColors.text }}>
-        <p>
-          Showing {filteredOfferImages.length} of {offerImages.length} offer images •
-          Sorted by: {sortByDate === "desc" ? "Newest First" : "Oldest First"} •
-          Last updated: {lastUpdated ? lastUpdated.toLocaleString() : '—'}
-        </p>
-      </div>
     </div>
   );
 }

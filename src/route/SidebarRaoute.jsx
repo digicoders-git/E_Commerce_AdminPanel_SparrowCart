@@ -14,7 +14,9 @@ import {
   FaMotorcycle,
   FaUserTie,
   FaTruck,
-  FaMobile
+  FaTicketAlt,
+  FaMobile,
+  FaComments
 } from "react-icons/fa";
 
 const AdminDashboard = lazy(() => import("../pages/AdminDashboard"));
@@ -28,6 +30,7 @@ const Stores = lazy(() => import("../pages/Stores"));
 const Orders = lazy(() => import("../pages/Orders"));
 const DeliveryBoys = lazy(() => import("../pages/DeliveryBoys"));
 const AppVersions = lazy(() => import("../pages/AppVersions"));
+const Reviews = lazy(() => import("../pages/Reviews"));
 
 const routes = [
   {
@@ -99,6 +102,12 @@ const routes = [
     component: AppVersions,
     name: "App Versions",
     icon: FaMobile,
+  },
+  {
+    path: "/reviews",
+    component: Reviews,
+    name: "Reviews",
+    icon: FaComments,
   },
 ];
 

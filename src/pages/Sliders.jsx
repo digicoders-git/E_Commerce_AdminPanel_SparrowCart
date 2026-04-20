@@ -1061,14 +1061,6 @@ export default function Sliders() {
         </>
       )}
 
-      {/* Footer Info */}
-      <div className="text-center text-sm opacity-70" style={{ color: themeColors.text }}>
-        <p>
-          Showing {filteredSliders.length} of {sliders.length} sliders • 
-          Sort Order: {sortOrder === "asc" ? "Ascending" : "Descending"} • 
-          Last updated: {new Date().toLocaleTimeString()}
-        </p>
-      </div>
     </div>
   );
 }
