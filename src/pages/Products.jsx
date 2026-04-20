@@ -1905,7 +1905,7 @@ export default function Products() {
                       >
                         <FaClipboard />
                       </button>
-                      <button
+                      {/* <button
                         onClick={() => showStoreAssignmentModal(product)}
                         className={`p-2 rounded-lg hover:bg-opacity-20 transition-colors ${
                           assignedStoresCount > 0 ? 'bg-green-100 text-green-700' : ''
@@ -1918,7 +1918,7 @@ export default function Products() {
                         disabled={storeAssignmentLoading[`${product._id}-loading`]}
                       >
                         {assignedStoresCount > 0 ? <FaLink /> : <FaStore />}
-                      </button>
+                      </button> */}
                     </div>
 
                     <div className="flex items-center gap-2">
