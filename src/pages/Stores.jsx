@@ -1862,12 +1862,12 @@ export default function Stores() {
                         disabled={actionLoading}
                         className="p-2 rounded-lg hover:bg-opacity-20 transition-colors"
                         style={{
-                          backgroundColor: store?.isActive ? '#F59E0B20' : '#10B98120',
-                          color: store?.isActive ? '#F59E0B' : '#10B981'
+                          backgroundColor: store?.isActive ? '#10B98120' : '#F59E0B20',
+                          color: store?.isActive ? '#10B981' : '#F59E0B'
                         }}
                         title={store?.isActive ? "Deactivate" : "Activate"}
                       >
-                        {store?.isActive ? <FaToggleOff /> : <FaToggleOn />}
+                        {store?.isActive ? <FaToggleOn /> : <FaToggleOff />}
                       </button>
                       <button
                         onClick={() => handleDelete(store)}

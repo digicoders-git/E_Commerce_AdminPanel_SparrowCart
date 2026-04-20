@@ -34,7 +34,8 @@ import {
   FaList,
   FaMapMarkerAlt,
   FaUnlink,
-  FaLink
+  FaLink,
+  FaBolt
 } from "react-icons/fa";
 import { useTheme } from "../context/ThemeContext";
 import {
@@ -615,6 +616,24 @@ export default function Products() {
                 <option value="false">Inactive (Hidden from users)</option>
               </select>
             </div>
+            <div>
+              <label className="block text-sm font-medium mb-1" style={{ color: themeColors.text }}>
+                New Arrival
+              </label>
+              <select
+                id="swal-isNewArrival"
+                className="w-full p-2 rounded-lg border"
+                style={{
+                  borderColor: themeColors.border,
+                  backgroundColor: themeColors.background,
+                  color: themeColors.text
+                }}
+                defaultValue="false"
+              >
+                <option value="false">No</option>
+                <option value="true">Yes (Show in New Arrivals)</option>
+              </select>
+            </div>
           </div>
 
           <div>
@@ -708,6 +727,7 @@ export default function Products() {
         const unit = document.getElementById('swal-unit').value;
         const description = document.getElementById('swal-description').value.trim();
         const isActive = document.getElementById('swal-isActive').value === 'true';
+        const isNewArrival = document.getElementById('swal-isNewArrival').value === 'true';
 
         // Get image files (max 3)
         const productImages = [];
@@ -782,6 +802,7 @@ export default function Products() {
           formData.append('unit', unit);
           formData.append('description', description);
           formData.append('isActive', isActive);
+          formData.append('isNewArrival', isNewArrival);
 
           productImages.forEach((image) => {
             formData.append('productImages', image);
@@ -981,6 +1002,24 @@ export default function Products() {
                 <option value="false">Inactive (Hidden from users)</option>
               </select>
             </div>
+            <div>
+              <label className="block text-sm font-medium mb-1" style={{ color: themeColors.text }}>
+                New Arrival
+              </label>
+              <select
+                id="swal-edit-isNewArrival"
+                className="w-full p-2 rounded-lg border"
+                style={{
+                  borderColor: themeColors.border,
+                  backgroundColor: themeColors.background,
+                  color: themeColors.text
+                }}
+                defaultValue={product?.isNewArrival ? "true" : "false"}
+              >
+                <option value="false">No</option>
+                <option value="true">Yes (Show in New Arrivals)</option>
+              </select>
+            </div>
           </div>
 
           <div>
@@ -1063,6 +1102,7 @@ export default function Products() {
         const unit = document.getElementById('swal-edit-unit').value;
         const description = document.getElementById('swal-edit-description').value.trim();
         const isActive = document.getElementById('swal-edit-isActive').value === 'true';
+        const isNewArrival = document.getElementById('swal-edit-isNewArrival').value === 'true';
 
         // Get new image files (max 3)
         const productImages = [];
@@ -1120,6 +1160,7 @@ export default function Products() {
           formData.append('unit', unit);
           formData.append('description', description);
           formData.append('isActive', isActive);
+          formData.append('isNewArrival', isNewArrival);
 
           productImages.forEach((image) => {
             formData.append('productImages', image);
@@ -1741,9 +1782,18 @@ export default function Products() {
                     }}
                   />
 
+                  {/* New Arrival Badge */}
+                  {product?.isNewArrival && (
+                    <div className="absolute top-2 left-2 z-10">
+                      <div className="px-2 py-1 rounded-full bg-blue-600 text-white text-[10px] font-bold shadow-lg flex items-center gap-1">
+                        <FaBolt className="animate-pulse" size={10} /> NEW
+                      </div>
+                    </div>
+                  )}
+
                   {/* Discount Badge */}
                   {product?.offerPrice && product?.offerPrice < product?.price && (
-                    <div className="absolute top-2 left-2">
+                    <div className={product?.isNewArrival ? "absolute top-10 left-2" : "absolute top-2 left-2"}>
                       <div className="px-3 py-1 rounded-full bg-red-500 text-white text-xs font-bold">
                         {calculatePercentageOff(product.price, product.offerPrice)}% OFF
                       </div>
@@ -1886,12 +1936,12 @@ export default function Products() {
                         disabled={actionLoading}
                         className="p-2 rounded-lg hover:bg-opacity-20 transition-colors"
                         style={{
-                          backgroundColor: product?.isActive ? '#F59E0B20' : '#10B98120',
-                          color: product?.isActive ? '#F59E0B' : '#10B981'
+                          backgroundColor: product?.isActive ? '#10B98120' : '#F59E0B20',
+                          color: product?.isActive ? '#10B981' : '#F59E0B'
                         }}
                         title={product?.isActive ? "Deactivate" : "Activate"}
                       >
-                        {product?.isActive ? <FaToggleOff /> : <FaToggleOn />}
+                        {product?.isActive ? <FaToggleOn /> : <FaToggleOff />}
                       </button>
                       <button
                         onClick={() => handleDelete(product)}

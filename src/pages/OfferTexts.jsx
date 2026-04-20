@@ -709,12 +709,12 @@ export default function OfferTexts() {
                     disabled={actionLoading}
                     className="p-2 rounded-lg hover:bg-opacity-20 transition-colors"
                     style={{
-                      backgroundColor: offerText?.isActive ? '#F59E0B20' : '#10B98120',
-                      color: offerText?.isActive ? '#F59E0B' : '#10B981'
+                      backgroundColor: offerText?.isActive ? '#10B98120' : '#F59E0B20',
+                      color: offerText?.isActive ? '#10B981' : '#F59E0B'
                     }}
                     title={offerText?.isActive ? "Deactivate" : "Activate"}
                   >
-                    {offerText?.isActive ? <FaToggleOff /> : <FaToggleOn />}
+                    {offerText?.isActive ? <FaToggleOn /> : <FaToggleOff />}
                   </button>
                   <button
                     onClick={() => handleDelete(offerText)}

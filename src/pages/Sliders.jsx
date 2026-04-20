@@ -924,8 +924,17 @@ export default function Sliders() {
                           <button onClick={() => showEditModal(slider)} className="p-2 rounded bg-yellow-100 text-yellow-600" title="Edit">
                             <FaEdit />
                           </button>
-                          <button onClick={() => toggleSliderStatus(slider)} disabled={actionLoading} className="p-2 rounded bg-green-100 text-green-600" title={slider.isActive ? "Deactivate" : "Activate"}>
-                            {slider.isActive ? <FaToggleOff /> : <FaToggleOn />}
+                          <button 
+                            onClick={() => toggleSliderStatus(slider)} 
+                            disabled={actionLoading} 
+                            className="p-2 rounded hover:bg-opacity-20 transition-colors"
+                            style={{ 
+                              backgroundColor: slider.isActive ? '#10B98120' : '#F59E0B20', 
+                              color: slider.isActive ? '#10B981' : '#F59E0B' 
+                            }}
+                            title={slider.isActive ? "Deactivate" : "Activate"}
+                          >
+                            {slider.isActive ? <FaToggleOn /> : <FaToggleOff />}
                           </button>
                           <button onClick={() => handleDelete(slider)} disabled={actionLoading} className="p-2 rounded bg-red-100 text-red-600" title="Delete">
                             <FaTrash />
@@ -1016,18 +1025,18 @@ export default function Sliders() {
                       </div>
                       
                       <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => toggleSliderStatus(slider)}
-                          disabled={actionLoading}
-                          className="p-2 rounded-lg hover:bg-opacity-20 transition-colors"
-                          style={{ 
-                            backgroundColor: slider.isActive ? '#F59E0B20' : '#10B98120', 
-                            color: slider.isActive ? '#F59E0B' : '#10B981' 
-                          }}
-                          title={slider.isActive ? "Deactivate" : "Activate"}
-                        >
-                          {slider.isActive ? <FaToggleOff /> : <FaToggleOn />}
-                        </button>
+                          <button
+                            onClick={() => toggleSliderStatus(slider)}
+                            disabled={actionLoading}
+                            className="p-2 rounded-lg hover:bg-opacity-20 transition-colors"
+                            style={{ 
+                              backgroundColor: slider.isActive ? '#10B98120' : '#F59E0B20', 
+                              color: slider.isActive ? '#10B981' : '#F59E0B' 
+                            }}
+                            title={slider.isActive ? "Deactivate" : "Activate"}
+                          >
+                            {slider.isActive ? <FaToggleOn /> : <FaToggleOff />}
+                          </button>
                         <button
                           onClick={() => handleDelete(slider)}
                           disabled={actionLoading}

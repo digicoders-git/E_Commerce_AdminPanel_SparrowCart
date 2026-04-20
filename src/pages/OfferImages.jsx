@@ -760,12 +760,12 @@ export default function OfferImages() {
                       disabled={actionLoading}
                       className="p-2 rounded-lg hover:bg-opacity-20 transition-colors"
                       style={{
-                        backgroundColor: offerImage?.isActive ? '#F59E0B20' : '#10B98120',
-                        color: offerImage?.isActive ? '#F59E0B' : '#10B981'
+                        backgroundColor: offerImage?.isActive ? '#10B98120' : '#F59E0B20',
+                        color: offerImage?.isActive ? '#10B981' : '#F59E0B'
                       }}
                       title={offerImage?.isActive ? "Deactivate" : "Activate"}
                     >
-                      {offerImage?.isActive ? <FaToggleOff /> : <FaToggleOn />}
+                      {offerImage?.isActive ? <FaToggleOn /> : <FaToggleOff />}
                     </button>
                     <button
                       onClick={() => handleDelete(offerImage)}
