@@ -205,7 +205,7 @@ export default function Sliders() {
               <input
                 id="swal-sliderImage"
                 type="file"
-                accept="image/*"
+                accept=".png, image/png"
                 className="hidden"
                 onChange={(e) => {
                   if (e.target.files[0]) {
@@ -226,7 +226,7 @@ export default function Sliders() {
               <div id="upload-placeholder" className="flex flex-col items-center text-muted group-hover:text-blue-500 transition-colors">
                 <FaImage className="text-4xl mb-2 opacity-50 group-hover:opacity-80" />
                 <p className="text-xs font-medium">Click to upload banner image</p>
-                <p className="text-[10px] opacity-70 mt-1">Recommended size: 1200 x 500px</p>
+                <p className="text-[10px] opacity-70 mt-1">Required format: PNG only. Recommended size: 1200 x 500px</p>
               </div>
               <img
                 id="image-preview"
@@ -269,8 +269,8 @@ export default function Sliders() {
           return false;
         }
 
-        if (!sliderImage.type.startsWith('image/')) {
-          Swal.showValidationMessage('Please select a valid image file');
+        if (sliderImage.type !== 'image/png') {
+          Swal.showValidationMessage('Only PNG format is allowed for slider images');
           return false;
         }
 
@@ -452,7 +452,7 @@ export default function Sliders() {
               <input
                 id="swal-edit-sliderImage"
                 type="file"
-                accept="image/*"
+                accept=".png, image/png"
                 className="hidden"
                 onChange={(e) => {
                   if (e.target.files[0]) {
@@ -512,6 +512,11 @@ export default function Sliders() {
         // Validation
         if (!title || !subtitle || !redirectUrl) {
           Swal.showValidationMessage('Please fill all required fields');
+          return false;
+        }
+        
+        if (sliderImage && sliderImage.type !== 'image/png') {
+          Swal.showValidationMessage('Only PNG format is allowed for slider images');
           return false;
         }
 
