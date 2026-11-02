@@ -16,7 +16,10 @@ import {
   FaTruck,
   FaTicketAlt,
   FaMobile,
-  FaComments
+  FaComments,
+  FaHeadset,
+  FaHeart,
+  FaUndo
 } from "react-icons/fa";
 
 const AdminDashboard = lazy(() => import("../pages/AdminDashboard"));
@@ -31,6 +34,9 @@ const Orders = lazy(() => import("../pages/Orders"));
 const DeliveryBoys = lazy(() => import("../pages/DeliveryBoys"));
 const AppVersions = lazy(() => import("../pages/AppVersions"));
 const Reviews = lazy(() => import("../pages/Reviews"));
+const HelpSupport = lazy(() => import("../pages/HelpSupport"));
+const Wishlists = lazy(() => import("../pages/Wishlists"));
+const Returns = lazy(() => import("../pages/Returns"));
 
 const routes = [
   {
@@ -108,6 +114,24 @@ const routes = [
     component: Reviews,
     name: "Reviews",
     icon: FaComments,
+  },
+  {
+    path: "/help-support",
+    component: HelpSupport,
+    name: "Help & Support",
+    icon: FaHeadset,
+  },
+  {
+    path: "/wishlists",
+    component: Wishlists,
+    name: "Wishlists",
+    icon: FaHeart,
+  },
+  {
+    path: "/returns",
+    component: Returns,
+    name: "Returns",
+    icon: FaUndo,
   },
 ];
 

@@ -78,23 +78,16 @@ const Login = () => {
         }}
       >
         {/* Branding Section */}
-        <div className="text-center mb-8">
-          <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden shadow border-2" style={{ borderColor: themeColors.primary }}>
+        <div className="text-center mb-6">
+          <div className="flex justify-center mb-2">
             <img
-              src="sparrowcart-logo.png"
+              src="/logo.png"
               alt="SparrowCart Logo"
-              className="w-full h-full object-cover"
+              className="h-28 sm:h-32 w-auto max-w-[260px] object-contain drop-shadow-sm"
             />
           </div>
 
-          <h1
-            className="text-3xl font-bold mb-1"
-            style={{ color: themeColors.primary }}
-          >
-            SparrowCart
-          </h1>
-
-          <p className="text-sm" style={{ color: themeColors.textSecondary }}>
+          <p className="text-sm font-semibold tracking-wide" style={{ color: themeColors.textSecondary }}>
             Admin Control Panel
           </p>
         </div>

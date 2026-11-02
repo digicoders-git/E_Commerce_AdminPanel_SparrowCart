@@ -139,31 +139,49 @@ export default function Categories() {
             <label className="block text-sm font-medium mb-1" style={{ color: themeColors.text }}>
               Category Image *
             </label>
-            <input
-              id="swal-categoryImage"
-              type="file"
-              accept="image/*"
-              className="w-full p-2 rounded-lg border"
-              style={{
-                borderColor: themeColors.border,
-                backgroundColor: themeColors.background,
-                color: themeColors.text
-              }}
+            {/* Hidden inputs */}
+            <input id="swal-categoryImage" type="file" accept="image/*" className="hidden"
               onChange={(e) => {
                 if (e.target.files[0]) {
                   const reader = new FileReader();
                   reader.onload = (event) => {
                     const img = document.getElementById('category-image-preview');
-                    if (img) {
-                      img.src = event.target.result;
-                      img.classList.remove('hidden');
-                    }
+                    if (img) { img.src = event.target.result; img.classList.remove('hidden'); }
                   };
                   reader.readAsDataURL(e.target.files[0]);
                 }
               }}
             />
-            <div className="mt-3">
+            <input id="swal-categoryImage-camera" type="file" accept="image/*" capture="environment" className="hidden"
+              onChange={(e) => {
+                if (e.target.files[0]) {
+                  const reader = new FileReader();
+                  reader.onload = (event) => {
+                    const img = document.getElementById('category-image-preview');
+                    if (img) { img.src = event.target.result; img.classList.remove('hidden'); }
+                    // sync to gallery input so preConfirm picks it up
+                    const dt = new DataTransfer();
+                    dt.items.add(e.target.files[0]);
+                    document.getElementById('swal-categoryImage').files = dt.files;
+                  };
+                  reader.readAsDataURL(e.target.files[0]);
+                }
+              }}
+            />
+            {/* Gallery / Camera buttons */}
+            <div className="flex gap-3 mb-3">
+              <button type="button" onClick={() => document.getElementById('swal-categoryImage').click()}
+                className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg border text-sm font-medium transition-all hover:opacity-80"
+                style={{ borderColor: themeColors.border, backgroundColor: themeColors.background, color: themeColors.text }}>
+                🖼️ Gallery
+              </button>
+              <button type="button" onClick={() => document.getElementById('swal-categoryImage-camera').click()}
+                className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg border text-sm font-medium transition-all hover:opacity-80"
+                style={{ borderColor: themeColors.border, backgroundColor: themeColors.background, color: themeColors.text }}>
+                📷 Camera
+              </button>
+            </div>
+            <div className="mt-1">
               <img
                 id="category-image-preview"
                 alt="Preview"
@@ -314,30 +332,47 @@ export default function Categories() {
 
           <div>
             <label className="block text-sm font-medium mb-1" style={{ color: themeColors.text }}>New Image (Optional)</label>
-            <input
-              id="swal-edit-categoryImage"
-              type="file"
-              accept="image/*"
-              className="w-full p-2 rounded-lg border"
-              style={{
-                borderColor: themeColors.border,
-                backgroundColor: themeColors.background,
-                color: themeColors.text
-              }}
+            {/* Hidden inputs */}
+            <input id="swal-edit-categoryImage" type="file" accept="image/*" className="hidden"
               onChange={(e) => {
                 if (e.target.files[0]) {
                   const reader = new FileReader();
                   reader.onload = (event) => {
                     const img = document.getElementById('edit-category-image-preview');
-                    if (img) {
-                      img.src = event.target.result;
-                      img.classList.remove('hidden');
-                    }
+                    if (img) { img.src = event.target.result; img.classList.remove('hidden'); }
                   };
                   reader.readAsDataURL(e.target.files[0]);
                 }
               }}
             />
+            <input id="swal-edit-categoryImage-camera" type="file" accept="image/*" capture="environment" className="hidden"
+              onChange={(e) => {
+                if (e.target.files[0]) {
+                  const reader = new FileReader();
+                  reader.onload = (event) => {
+                    const img = document.getElementById('edit-category-image-preview');
+                    if (img) { img.src = event.target.result; img.classList.remove('hidden'); }
+                    const dt = new DataTransfer();
+                    dt.items.add(e.target.files[0]);
+                    document.getElementById('swal-edit-categoryImage').files = dt.files;
+                  };
+                  reader.readAsDataURL(e.target.files[0]);
+                }
+              }}
+            />
+            {/* Gallery / Camera buttons */}
+            <div className="flex gap-3 mb-2">
+              <button type="button" onClick={() => document.getElementById('swal-edit-categoryImage').click()}
+                className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg border text-sm font-medium transition-all hover:opacity-80"
+                style={{ borderColor: themeColors.border, backgroundColor: themeColors.background, color: themeColors.text }}>
+                🖼️ Gallery
+              </button>
+              <button type="button" onClick={() => document.getElementById('swal-edit-categoryImage-camera').click()}
+                className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg border text-sm font-medium transition-all hover:opacity-80"
+                style={{ borderColor: themeColors.border, backgroundColor: themeColors.background, color: themeColors.text }}>
+                📷 Camera
+              </button>
+            </div>
             <div className="mt-2">
               <img
                 id="edit-category-image-preview"

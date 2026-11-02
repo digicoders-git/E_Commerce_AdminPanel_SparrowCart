@@ -851,6 +851,68 @@ export default function Orders() {
     });
   };
 
+  // Quick status change from table
+  const quickChangeStatus = (order) => {
+    const STATUS_OPTIONS = [
+      { value: 'pending',   label: 'Pending',   color: '#F59E0B', bg: '#fffbeb' },
+      { value: 'confirmed', label: 'Confirmed', color: '#3B82F6', bg: '#eff6ff' },
+      { value: 'shipped',   label: 'Shipped',   color: '#8B5CF6', bg: '#f5f3ff' },
+      { value: 'delivered', label: 'Delivered', color: '#10B981', bg: '#f0fdf4' },
+      { value: 'cancelled', label: 'Cancelled', color: '#EF4444', bg: '#fef2f2' },
+    ];
+
+    const doUpdate = async (newStatus) => {
+      if (newStatus === order.status) { MySwal.close(); return; }
+      MySwal.close();
+      try {
+        setActionLoading(true);
+        await updateOrderStatusAPI(order._id, newStatus);
+        toast.success(`Status updated to "${newStatus}"`);
+        fetchOrders();
+      } catch (err) {
+        toast.error('Failed to update status');
+      } finally {
+        setActionLoading(false);
+      }
+    };
+
+    MySwal.fire({
+      title: <div className="text-lg font-bold" style={{ color: themeColors.text }}>Change Order Status</div>,
+      html: (
+        <div className="text-left space-y-4" style={{ color: themeColors.text }}>
+          <div className="p-3 rounded-lg border" style={{ borderColor: themeColors.border, backgroundColor: themeColors.surface }}>
+            <p className="font-bold">{order.user?.fullName || 'N/A'}</p>
+            <p className="text-xs opacity-60">₹{order.grandTotal} • {order.items?.length} item(s)</p>
+          </div>
+          <p className="text-sm">Current: <span className={`font-bold ${getStatusColor(order.status).text}`}>{order.status}</span></p>
+          <div className="grid grid-cols-1 gap-2">
+            {STATUS_OPTIONS.map(s => (
+              <button
+                key={s.value}
+                onClick={() => doUpdate(s.value)}
+                className="w-full p-3 rounded-xl border-2 flex items-center gap-3 transition-all hover:scale-[1.02] cursor-pointer"
+                style={{
+                  borderColor: order.status === s.value ? s.color : '#e5e7eb',
+                  backgroundColor: order.status === s.value ? s.bg : 'transparent',
+                }}
+              >
+                <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: s.color }}></span>
+                <span className="font-medium" style={{ color: s.color }}>{s.label}</span>
+                {order.status === s.value && <span className="ml-auto text-xs font-bold" style={{ color: s.color }}>✓ Current</span>}
+              </button>
+            ))}
+          </div>
+        </div>
+      ),
+      showConfirmButton: false,
+      showCancelButton: true,
+      cancelButtonText: 'Cancel',
+      cancelButtonColor: themeColors.border,
+      background: themeColors.background,
+      width: '380px',
+    });
+  };
+
   // Update payment status
   const updatePaymentStatus = async (order, newStatus) => {
     const result = await MySwal.fire({
@@ -1391,6 +1453,15 @@ export default function Orders() {
                           disabled={actionLoading}
                         >
                           <FaEye size={14} />
+                        </button>
+                        <button
+                          onClick={() => quickChangeStatus(order)}
+                          className="p-2 rounded-lg hover:opacity-80 transition-colors"
+                          style={{ backgroundColor: '#10B98120', color: '#10B981' }}
+                          title="Change Status"
+                          disabled={actionLoading}
+                        >
+                          <FaEdit size={14} />
                         </button>
                         <button
                           onClick={() => printOrder(order)}

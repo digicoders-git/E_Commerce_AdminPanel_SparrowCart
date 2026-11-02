@@ -278,7 +278,7 @@ const Header = memo(({
   return (
     <>
       <header
-        className="h-16 flex items-center justify-between px-4 border-b backdrop-blur-sm sticky top-0 z-40"
+        className="h-20 flex items-center justify-between px-4 border-b backdrop-blur-sm sticky top-0 z-40"
         style={{
           backgroundColor: themeColors.surface,
           borderColor: themeColors.border,

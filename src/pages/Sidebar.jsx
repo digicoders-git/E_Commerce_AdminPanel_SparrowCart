@@ -67,10 +67,10 @@ const Sidebar = ({
   logout,
   themeColors,
 }) => {
-  // 🔥 Sirf wahi routes jo hide: true NA ho
+  // Ã°Å¸â€Â¥ Sirf wahi routes jo hide: true NA ho
   const visibleRoutes = routes.filter((r) => !r.hide);
 
-  // Active check — nested paths handle karega (e.g. /surveys/123/questions)
+  // Active check Ã¢â‚¬â€ nested paths handle karega (e.g. /surveys/123/questions)
   const isRouteActive = (route) => {
     if (currentPath === route.path) return true;
     // agar route.path "/" nahi hai aur currentPath usse start hota hai
@@ -104,23 +104,15 @@ const Sidebar = ({
       >
         {/* Header */}
         <div
-          className="flex items-center justify-between h-16 px-4 border-b"
+          className="flex items-center justify-between h-20 px-3 border-b"
           style={{ borderColor: themeColors.border }}
         >
-          <div className="flex items-center">
-            <div className="w-8 h-8 rounded-full overflow-hidden mr-3 border" style={{ borderColor: themeColors.primary }}>
-              <img
-                src="sparrowcart-logo.png"
-                alt="SparrowCart Logo"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <h1
-              className="text-xl font-bold"
-              style={{ color: themeColors.primary }}
-            >
-              SparrowCart
-            </h1>
+          <div className="flex items-center justify-center flex-1">
+            <img
+              src="/logo.png"
+              alt="SparrowCart Logo"
+              className="h-14 sm:h-16 w-auto max-w-[200px] object-contain drop-shadow-sm"
+            />
           </div>
           <button
             onClick={onClose}
@@ -136,7 +128,7 @@ const Sidebar = ({
         </div>
 
         {/* Navigation */}
-        <div className="flex-1 overflow-y-auto py-6">
+        <div className="flex-1 overflow-y-auto py-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           <nav className="px-4 space-y-2" aria-label="Main navigation">
             {visibleRoutes.map((route) => (
               <SidebarItem

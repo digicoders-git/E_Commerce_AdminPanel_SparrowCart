@@ -410,23 +410,19 @@ export default function Products() {
   // Clear image previews and file inputs (both create & edit IDs)
   const clearImagePreviews = () => {
     setImagePreviews([]);
-    // Clear file inputs for create modal
     for (let i = 0; i < 3; i++) {
       const fileInput = document.getElementById(`productImage-${i}`);
       if (fileInput) fileInput.value = "";
-      const createImg = document.getElementById(`create-preview-${i}`);
-      if (createImg) {
-        createImg.src = "https://via.placeholder.com/300x200?text=Preview";
-        // don't remove hidden: we show placeholder
-        createImg.classList.remove('hidden');
-      }
-      const editImg = document.getElementById(`edit-preview-${i}`);
-      if (editImg) {
-        editImg.src = "https://via.placeholder.com/300x200?text=New+Preview";
-        editImg.classList.remove('hidden');
-      }
+      const cameraInput = document.getElementById(`productImage-camera-${i}`);
+      if (cameraInput) cameraInput.value = "";
       const editInput = document.getElementById(`editProductImage-${i}`);
       if (editInput) editInput.value = "";
+      const editCameraInput = document.getElementById(`editProductImage-camera-${i}`);
+      if (editCameraInput) editCameraInput.value = "";
+      const createImg = document.getElementById(`create-preview-${i}`);
+      if (createImg) { createImg.src = "https://via.placeholder.com/300x200?text=Preview"; createImg.classList.remove('hidden'); }
+      const editImg = document.getElementById(`edit-preview-${i}`);
+      if (editImg) { editImg.src = "https://via.placeholder.com/300x200?text=New+Preview"; editImg.classList.remove('hidden'); }
     }
   };
 
@@ -657,27 +653,29 @@ export default function Products() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[0, 1, 2].map((index) => (
                 <div key={index}>
-                  <input
-                    id={`productImage-${index}`}
-                    type="file"
-                    accept="image/*"
-                    className="w-full p-2 rounded-lg border text-sm"
-                    style={{
-                      borderColor: themeColors.border,
-                      backgroundColor: themeColors.background,
-                      color: themeColors.text
-                    }}
-                    onChange={(e) => handleImagePreview(e, index, 'create')}
-                  />
-                  <div className="mt-2">
-                    <img
-                      id={`create-preview-${index}`}
-                      src={"https://via.placeholder.com/300x200?text=Preview"}
-                      alt={`Preview ${index + 1}`}
-                      className="w-full h-32 object-cover rounded-lg border"
-                      style={{ borderColor: themeColors.border }}
-                    />
+                  {/* Hidden inputs */}
+                  <input id={`productImage-${index}`} type="file" accept="image/*" className="hidden" onChange={(e) => handleImagePreview(e, index, 'create')} />
+                  <input id={`productImage-camera-${index}`} type="file" accept="image/*" capture="environment" className="hidden" onChange={(e) => handleImagePreview(e, index, 'create')} />
+                  {/* Gallery / Camera buttons */}
+                  <div className="flex gap-2 mb-2">
+                    <button type="button" onClick={() => document.getElementById(`productImage-${index}`).click()}
+                      className="flex-1 flex items-center justify-center gap-1 py-2 rounded-lg border text-xs font-medium transition-all hover:opacity-80"
+                      style={{ borderColor: themeColors.border, backgroundColor: themeColors.background, color: themeColors.text }}>
+                      🖼️ Gallery
+                    </button>
+                    <button type="button" onClick={() => document.getElementById(`productImage-camera-${index}`).click()}
+                      className="flex-1 flex items-center justify-center gap-1 py-2 rounded-lg border text-xs font-medium transition-all hover:opacity-80"
+                      style={{ borderColor: themeColors.border, backgroundColor: themeColors.background, color: themeColors.text }}>
+                      📷 Camera
+                    </button>
                   </div>
+                  <img
+                    id={`create-preview-${index}`}
+                    src={"https://via.placeholder.com/300x200?text=Preview"}
+                    alt={`Preview ${index + 1}`}
+                    className="w-full h-32 object-cover rounded-lg border"
+                    style={{ borderColor: themeColors.border }}
+                  />
                 </div>
               ))}
             </div>
@@ -1044,27 +1042,29 @@ export default function Products() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[0, 1, 2].map((index) => (
                 <div key={index}>
-                  <input
-                    id={`editProductImage-${index}`}
-                    type="file"
-                    accept="image/*"
-                    className="w-full p-2 rounded-lg border text-sm"
-                    style={{
-                      borderColor: themeColors.border,
-                      backgroundColor: themeColors.background,
-                      color: themeColors.text
-                    }}
-                    onChange={(e) => handleImagePreview(e, index, 'edit')}
-                  />
-                  <div className="mt-2">
-                    <img
-                      id={`edit-preview-${index}`}
-                      src={(product.images && product.images[index]) || "https://via.placeholder.com/300x200?text=New+Preview"}
-                      alt={`Preview ${index + 1}`}
-                      className="w-full h-32 object-cover rounded-lg border"
-                      style={{ borderColor: themeColors.border }}
-                    />
+                  {/* Hidden inputs */}
+                  <input id={`editProductImage-${index}`} type="file" accept="image/*" className="hidden" onChange={(e) => handleImagePreview(e, index, 'edit')} />
+                  <input id={`editProductImage-camera-${index}`} type="file" accept="image/*" capture="environment" className="hidden" onChange={(e) => handleImagePreview(e, index, 'edit')} />
+                  {/* Gallery / Camera buttons */}
+                  <div className="flex gap-2 mb-2">
+                    <button type="button" onClick={() => document.getElementById(`editProductImage-${index}`).click()}
+                      className="flex-1 flex items-center justify-center gap-1 py-2 rounded-lg border text-xs font-medium transition-all hover:opacity-80"
+                      style={{ borderColor: themeColors.border, backgroundColor: themeColors.background, color: themeColors.text }}>
+                      🖼️ Gallery
+                    </button>
+                    <button type="button" onClick={() => document.getElementById(`editProductImage-camera-${index}`).click()}
+                      className="flex-1 flex items-center justify-center gap-1 py-2 rounded-lg border text-xs font-medium transition-all hover:opacity-80"
+                      style={{ borderColor: themeColors.border, backgroundColor: themeColors.background, color: themeColors.text }}>
+                      📷 Camera
+                    </button>
                   </div>
+                  <img
+                    id={`edit-preview-${index}`}
+                    src={(product.images && product.images[index]) || "https://via.placeholder.com/300x200?text=New+Preview"}
+                    alt={`Preview ${index + 1}`}
+                    className="w-full h-32 object-cover rounded-lg border"
+                    style={{ borderColor: themeColors.border }}
+                  />
                 </div>
               ))}
             </div>
