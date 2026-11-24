@@ -35,8 +35,10 @@ import {
   FaMapMarkerAlt,
   FaUnlink,
   FaLink,
-  FaBolt
+  FaBolt,
+  FaBarcode
 } from "react-icons/fa";
+import ProductLabelModal from "../components/ProductLabelModal";
 import { useTheme } from "../context/ThemeContext";
 import {
   createProductAPI,
@@ -65,6 +67,15 @@ export default function Products() {
   const [imagePreviews, setImagePreviews] = useState([]);
   const [storeAssignmentLoading, setStoreAssignmentLoading] = useState({});
   const [storeProductsData, setStoreProductsData] = useState({}); // StoreID -> {store: {}, products: []}
+  const [labelModalOpen, setLabelModalOpen] = useState(false);
+  const [selectedLabelProduct, setSelectedLabelProduct] = useState(null);
+  const [selectedBulkProducts, setSelectedBulkProducts] = useState([]);
+
+  const openLabelModal = (product = null, bulkList = []) => {
+    setSelectedLabelProduct(product);
+    setSelectedBulkProducts(bulkList);
+    setLabelModalOpen(true);
+  };
 
   // Fetch all products, categories, and stores
   const fetchData = async () => {
@@ -1531,6 +1542,20 @@ export default function Products() {
               ))}
             </div>
           </div>
+
+          <div className="pt-2">
+            <button
+              onClick={() => {
+                Swal.close();
+                openLabelModal(product);
+              }}
+              className="w-full py-2.5 rounded-xl font-bold flex items-center justify-center gap-2 shadow-sm text-white transition-all hover:scale-[1.01]"
+              style={{ backgroundColor: '#6366F1' }}
+            >
+              <FaBarcode />
+              Download / Print Product Label
+            </button>
+          </div>
         </div>
       ),
       showConfirmButton: false,
@@ -1641,6 +1666,20 @@ export default function Products() {
             disabled={loading}
           >
             <FaSync className={loading ? "animate-spin" : ""} />
+          </button>
+
+          <button
+            onClick={() => openLabelModal(null, filteredProducts)}
+            className="px-4 py-2 rounded-xl flex items-center gap-2 border transition-all hover:scale-105"
+            style={{
+              borderColor: themeColors.border,
+              backgroundColor: themeColors.surface,
+              color: themeColors.text
+            }}
+            title="Print / Download Labels for all filtered products"
+          >
+            <FaBarcode style={{ color: themeColors.primary }} />
+            <span className="hidden md:inline">Print Labels</span>
           </button>
 
           <button
@@ -1880,6 +1919,14 @@ export default function Products() {
                         <FaEye />
                       </button>
                       <button
+                        onClick={() => openLabelModal(product)}
+                        className="p-2 rounded-lg hover:bg-opacity-20 transition-colors"
+                        style={{ backgroundColor: '#6366F120', color: '#6366F1' }}
+                        title="Download / Print Product Label"
+                      >
+                        <FaBarcode />
+                      </button>
+                      <button
                         onClick={() => copyToClipboard(product?._id)}
                         className="p-2 rounded-lg hover:bg-opacity-20 transition-colors"
                         style={{ backgroundColor: '#8B5CF620', color: '#8B5CF6' }}
@@ -1942,6 +1989,19 @@ export default function Products() {
           })}
         </div>
       )}
+
+      {/* Product Label & Barcode Modal */}
+      <ProductLabelModal
+        isOpen={labelModalOpen}
+        onClose={() => {
+          setLabelModalOpen(false);
+          setSelectedLabelProduct(null);
+          setSelectedBulkProducts([]);
+        }}
+        product={selectedLabelProduct}
+        products={selectedBulkProducts}
+        themeColors={themeColors}
+      />
 
     </div>
   );

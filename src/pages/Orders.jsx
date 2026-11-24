@@ -31,6 +31,7 @@ import {
   FaCopy,
   FaPrint,
   FaDownload,
+  FaBarcode,
   FaExclamationTriangle,
   FaCheck,
   FaClock,
@@ -45,6 +46,7 @@ import {
   FaList
 } from "react-icons/fa";
 import { useTheme } from "../context/ThemeContext";
+import { generateCode39Svg, getQrCodeUrl } from "../utils/barcodeGenerator";
 import {
   getAllOrdersAPI,
   getOrderByIdAPI,
@@ -826,6 +828,14 @@ export default function Orders() {
             Close
           </button>
           <button
+            onClick={() => printShippingLabel(order)}
+            className="px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 text-white"
+            style={{ backgroundColor: '#6366F1' }}
+          >
+            <FaBarcode size={14} />
+            Shipping Label
+          </button>
+          <button
             onClick={() => printOrder(order)}
             className="px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2"
             style={{ backgroundColor: themeColors.primary, color: 'white' }}
@@ -1048,68 +1058,469 @@ export default function Orders() {
     toast.success("Orders exported successfully!");
   };
 
-  // Print order summary
+  // Print order summary with QR Code
   const printOrder = (order) => {
     const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      alert("Please allow popups to print invoice");
+      return;
+    }
+
+    const orderId = order._id || '';
+    const orderNum = order.orderNumber || (orderId ? orderId.substring(orderId.length - 8).toUpperCase() : '');
+    const qrCodeUrl = getQrCodeUrl(orderId, 120);
+
     printWindow.document.write(`
+      <!DOCTYPE html>
       <html>
         <head>
-          <title>Order Invoice - ${order._id}</title>
+          <title>Order Invoice - ${orderNum || orderId}</title>
           <style>
-            body { font-family: Arial, sans-serif; padding: 20px; }
-            .invoice { max-width: 800px; margin: 0 auto; }
-            .header { text-align: center; margin-bottom: 30px; }
-            .section { margin-bottom: 20px; }
-            .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-            .total { font-size: 1.2em; font-weight: bold; }
-            .item { border-bottom: 1px solid #eee; padding: 10px 0; }
+            * { box-sizing: border-box; }
+            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; padding: 24px; color: #1e293b; background: #fff; }
+            .invoice { max-width: 800px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; }
+            
+            .invoice-header {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              border-bottom: 2px solid #0f172a;
+              padding-bottom: 16px;
+              margin-bottom: 24px;
+            }
+            .brand-name {
+              font-size: 24px;
+              font-weight: 900;
+              letter-spacing: 1px;
+              color: #0f172a;
+            }
+            .invoice-tag {
+              font-size: 13px;
+              font-weight: 700;
+              color: #64748b;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              margin-bottom: 6px;
+            }
+            .meta-line {
+              font-size: 13px;
+              color: #475569;
+              margin: 3px 0;
+            }
+            .order-id-badge {
+              font-family: monospace;
+              font-weight: 700;
+              background: #f1f5f9;
+              color: #0f172a;
+              padding: 2px 8px;
+              border-radius: 4px;
+              border: 1px solid #cbd5e1;
+              display: inline-block;
+            }
+
+            .qr-box {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              text-align: center;
+              background: #ffffff;
+              border: 1.5px solid #cbd5e1;
+              border-radius: 10px;
+              padding: 8px 10px;
+              box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            }
+            .qr-img {
+              width: 96px;
+              height: 96px;
+              display: block;
+            }
+            .qr-label {
+              font-size: 8.5px;
+              font-weight: 800;
+              color: #475569;
+              letter-spacing: 0.8px;
+              margin-top: 4px;
+            }
+
+            .section { margin-bottom: 24px; }
+            .section-title {
+              font-size: 14px;
+              font-weight: 800;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              color: #0f172a;
+              border-bottom: 1px solid #e2e8f0;
+              padding-bottom: 6px;
+              margin-bottom: 12px;
+            }
+
+            .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+            .info-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; }
+            .info-box p { font-size: 13px; margin: 4px 0; color: #334155; }
+
+            .items-table {
+              width: 100%;
+              border-collapse: collapse;
+              font-size: 13px;
+              margin-top: 8px;
+            }
+            .items-table th {
+              background: #f1f5f9;
+              padding: 10px;
+              text-align: left;
+              border-bottom: 2px solid #cbd5e1;
+              font-weight: 700;
+            }
+            .items-table td {
+              padding: 10px;
+              border-bottom: 1px solid #e2e8f0;
+            }
+
+            .summary-box {
+              background: #f8fafc;
+              border: 1px solid #e2e8f0;
+              border-radius: 8px;
+              padding: 14px;
+            }
+            .summary-line {
+              display: flex;
+              justify-content: space-between;
+              font-size: 13px;
+              margin: 6px 0;
+            }
+            .total-line {
+              display: flex;
+              justify-content: space-between;
+              font-size: 16px;
+              font-weight: 900;
+              color: #0f172a;
+              border-top: 2px solid #cbd5e1;
+              padding-top: 8px;
+              margin-top: 8px;
+            }
+
+            .status-badge {
+              display: inline-block;
+              font-size: 11px;
+              font-weight: 700;
+              text-transform: uppercase;
+              padding: 3px 8px;
+              border-radius: 4px;
+              background: #e2e8f0;
+            }
+
+            .no-print {
+              margin-top: 24px;
+              display: flex;
+              gap: 10px;
+              justify-content: center;
+            }
+            .btn {
+              padding: 10px 20px;
+              border-radius: 6px;
+              font-weight: 700;
+              cursor: pointer;
+              border: none;
+              font-size: 13px;
+            }
+            .btn-print { background: #0f172a; color: #fff; }
+            .btn-close { background: #e2e8f0; color: #334155; }
+
             @media print {
+              body { padding: 0; }
+              .invoice { border: none; padding: 0; }
               .no-print { display: none; }
             }
           </style>
         </head>
         <body>
           <div class="invoice">
-            <div class="header">
-              <h1>Order Invoice</h1>
-              <p>Date: ${order.createdAtIST}</p>
-              <p>Order ID: ${order._id}</p>
-            </div>
-            <div class="section">
-              <h3>Customer Information</h3>
-              <p>Name: ${order.user?.fullName}</p>
-              <p>Mobile: ${order.user?.mobile}</p>
-              <p>Email: ${order.user?.email}</p>
-            </div>
-            <div class="section">
-              <h3>Order Items</h3>
-              ${order.items?.map(item => `
-                <div class="item">
-                  <p><strong>${item.name}</strong> (${item.quantity} ${item.unit})</p>
-                  <p>Price: ₹${item.offerPrice} each (₹${item.lineTotal} total)</p>
+            <!-- Header with Brand & Order ID QR Code -->
+            <div class="invoice-header">
+              <div>
+                <div class="brand-name">SPARROW CART</div>
+                <div class="invoice-tag">Official Order Invoice</div>
+                <div class="meta-line"><strong>Invoice Date:</strong> ${order.createdAtIST || new Date().toLocaleString('en-IN')}</div>
+                <div class="meta-line">
+                  <strong>Order ID:</strong> <span class="order-id-badge">${orderId}</span>
                 </div>
-              `).join('')}
+                ${order.orderNumber ? `
+                  <div class="meta-line">
+                    <strong>Order Number:</strong> <span style="font-weight: 800; color: #0f172a;">#${order.orderNumber}</span>
+                  </div>
+                ` : ''}
+              </div>
+
+              <!-- QR Code generated from Order ID -->
+              <div class="qr-box">
+                <img src="${qrCodeUrl}" alt="Order ID QR Code" class="qr-img" />
+                <span class="qr-label">SCAN ORDER ID</span>
+              </div>
             </div>
+
+            <!-- Customer & Shipping Information -->
             <div class="section grid">
-              <div>
-                <h3>Order Summary</h3>
-                <p>Subtotal: ₹${order.subtotal}</p>
-                <p>Discount: -₹${order.totalDiscount}</p>
-                <p class="total">Grand Total: ₹${order.grandTotal}</p>
+              <div class="info-box">
+                <div class="section-title">Customer Information</div>
+                <p><strong>Name:</strong> ${order.user?.fullName || order.shippingAddress?.fullName || 'N/A'}</p>
+                <p><strong>Mobile:</strong> ${order.user?.mobile || order.shippingAddress?.mobile || 'N/A'}</p>
+                ${order.user?.email ? `<p><strong>Email:</strong> ${order.user.email}</p>` : ''}
               </div>
-              <div>
-                <h3>Status</h3>
-                <p>Order Status: ${order.status}</p>
-                <p>Payment Status: ${order.paymentStatus}</p>
-                <p>Payment Method: ${order.paymentMethod}</p>
+              <div class="info-box">
+                <div class="section-title">Shipping Address</div>
+                <p>${order.shippingAddress?.addressLine1 || ''} ${order.shippingAddress?.addressLine2 || ''}</p>
+                ${order.shippingAddress?.landmark ? `<p>Near ${order.shippingAddress.landmark}</p>` : ''}
+                <p><strong>${order.shippingAddress?.city || ''}, ${order.shippingAddress?.state || ''} - ${order.shippingAddress?.pincode || ''}</strong></p>
+                ${order.collectionOTP ? `<p><strong>Delivery OTP:</strong> <span style="background: #fef08a; padding: 1px 6px; border-radius: 3px; font-weight: bold;">${order.collectionOTP}</span></p>` : ''}
               </div>
             </div>
-            <div class="section no-print">
-              <button onclick="window.print()">Print Invoice</button>
-              <button onclick="window.close()">Close</button>
+
+            <!-- Order Items Table -->
+            <div class="section">
+              <div class="section-title">Purchased Items</div>
+              <table class="items-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Product Description</th>
+                    <th style="text-align: center;">Qty</th>
+                    <th style="text-align: right;">Unit Price</th>
+                    <th style="text-align: right;">Total Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${(order.items || []).map((item, idx) => `
+                    <tr>
+                      <td style="color: #64748b;">${idx + 1}</td>
+                      <td>
+                        <strong>${item.name || item.product?.name || 'Product'}</strong>
+                        ${item.unit ? `<span style="color: #64748b; font-size: 11px;"> (${item.unit})</span>` : ''}
+                      </td>
+                      <td style="text-align: center; font-weight: bold;">${item.quantity || 1}</td>
+                      <td style="text-align: right;">₹${item.offerPrice?.toLocaleString('en-IN') || item.price?.toLocaleString('en-IN') || 0}</td>
+                      <td style="text-align: right; font-weight: bold;">₹${(item.lineTotal || (item.offerPrice || item.price) * (item.quantity || 1)).toLocaleString('en-IN')}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Order Summary & Payment Status -->
+            <div class="section grid">
+              <div class="info-box">
+                <div class="section-title">Payment & Status</div>
+                <p><strong>Payment Method:</strong> ${order.paymentMethod?.toUpperCase() || 'COD'}</p>
+                <p><strong>Payment Status:</strong> <span class="status-badge">${order.paymentStatus || 'Pending'}</span></p>
+                <p><strong>Order Status:</strong> <span class="status-badge">${order.status || 'Confirmed'}</span></p>
+                ${order.store?.storeName ? `<p><strong>Fulfilled By:</strong> ${order.store.storeName}</p>` : ''}
+              </div>
+
+              <div class="summary-box">
+                <div class="section-title">Price Breakdown</div>
+                <div class="summary-line">
+                  <span>Subtotal:</span>
+                  <span>₹${(order.subtotal || 0).toLocaleString('en-IN')}</span>
+                </div>
+                ${order.totalDiscount > 0 ? `
+                  <div class="summary-line" style="color: #16a34a;">
+                    <span>Discount:</span>
+                    <span>-₹${order.totalDiscount.toLocaleString('en-IN')}</span>
+                  </div>
+                ` : ''}
+                <div class="total-line">
+                  <span>Grand Total:</span>
+                  <span>₹${(order.grandTotal || 0).toLocaleString('en-IN')}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Print Actions -->
+            <div class="no-print">
+              <button onclick="window.print()" class="btn btn-print">Print Invoice</button>
+              <button onclick="window.close()" class="btn btn-close">Close</button>
             </div>
           </div>
+
+          <script>
+            window.onload = function() {
+              setTimeout(function() { window.print(); }, 400);
+            };
+          </script>
         </body>
+      </html>
+    `);
+    printWindow.document.close();
+  };
+
+  // Print Shipping / Parcel Label
+  const printShippingLabel = (order) => {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) return;
+
+    const orderNum = order.orderNumber || (order._id ? order._id.substring(order._id.length - 8).toUpperCase() : 'ORD000');
+    const barcodeSvg = generateCode39Svg(orderNum, { height: 38 });
+    const addr = order.shippingAddress || {};
+    const isCod = order.paymentMethod?.toLowerCase() === 'cod';
+
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Shipping Label - ${orderNum}</title>
+        <style>
+          * { box-sizing: border-box; margin: 0; padding: 0; }
+          body { font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif; padding: 15px; background: #fff; color: #111; }
+          .label-box {
+            width: 100mm;
+            min-height: 140mm;
+            border: 2px solid #000;
+            padding: 12px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+          }
+          .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #000;
+            padding-bottom: 6px;
+            margin-bottom: 8px;
+          }
+          .brand { font-size: 18px; font-weight: 900; letter-spacing: 1px; }
+          .badge {
+            font-size: 12px;
+            font-weight: 900;
+            padding: 3px 8px;
+            border: 2px solid #000;
+            border-radius: 4px;
+            background: ${isCod ? '#000' : '#fff'};
+            color: ${isCod ? '#fff' : '#000'};
+          }
+          .barcode-section {
+            text-align: center;
+            padding: 6px 0;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 8px;
+          }
+          .section { margin-bottom: 8px; font-size: 12px; }
+          .section-title { font-size: 10px; font-weight: 800; text-transform: uppercase; color: #555; margin-bottom: 3px; }
+          .address-box {
+            border: 1px solid #000;
+            padding: 8px;
+            border-radius: 4px;
+            background: #fafafa;
+          }
+          .cust-name { font-size: 15px; font-weight: 800; margin-bottom: 3px; }
+          .cust-phone { font-size: 13px; font-weight: bold; margin-top: 4px; }
+          .otp-badge {
+            display: inline-block;
+            background: #fef08a;
+            border: 1px dashed #854d0e;
+            padding: 2px 6px;
+            font-weight: 800;
+            font-size: 12px;
+            margin-top: 4px;
+          }
+          .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            margin-top: 4px;
+          }
+          .items-table th, .items-table td {
+            border: 1px solid #ddd;
+            padding: 4px 6px;
+            text-align: left;
+          }
+          .footer {
+            border-top: 2px solid #000;
+            padding-top: 6px;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+          }
+          .total-amt { font-size: 16px; font-weight: 900; }
+          @media print {
+            body { padding: 0; }
+            @page { size: 100mm 150mm; margin: 0; }
+            .label-box { border: none; width: 100mm; height: 145mm; }
+            .no-print { display: none; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="label-box">
+          <div class="header">
+            <div>
+              <div class="brand">SPARROW CART</div>
+              <div style="font-size:9px;color:#666;">EXPRESS DELIVERY</div>
+            </div>
+            <div class="badge">${isCod ? 'CASH ON DELIVERY' : 'PREPAID'}</div>
+          </div>
+
+          <div class="barcode-section">
+            ${barcodeSvg}
+            <div style="font-family:monospace;font-weight:bold;font-size:12px;margin-top:2px;">
+              ORD #: ${order.orderNumber || order._id}
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">DELIVER TO (CUSTOMER):</div>
+            <div class="address-box">
+              <div class="cust-name">${addr.fullName || order.user?.fullName || 'Customer'}</div>
+              <div>${addr.addressLine1 || ''} ${addr.addressLine2 || ''}</div>
+              ${addr.landmark ? `<div>Landmark: ${addr.landmark}</div>` : ''}
+              <div><strong>${addr.city || ''}, ${addr.state || ''} - ${addr.pincode || ''}</strong></div>
+              <div class="cust-phone">📞 Phone: ${addr.mobile || order.user?.mobile || 'N/A'}</div>
+              ${order.collectionOTP ? `<div class="otp-badge">🔑 Delivery OTP: ${order.collectionOTP}</div>` : ''}
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">PACKAGE CONTENTS:</div>
+            <table class="items-table">
+              <thead>
+                <tr style="background:#f1f5f9;">
+                  <th>Item</th>
+                  <th style="width:45px;text-align:center;">Qty</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${(order.items || []).map(i => `
+                  <tr>
+                    <td>${i.name || i.product?.name || 'Item'}</td>
+                    <td style="text-align:center;font-weight:bold;">${i.quantity || 1}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="footer">
+            <div>
+              <div>Seller: <strong>${order.store?.storeName || 'SparrowCart Warehouse'}</strong></div>
+              <div style="font-size:9px;color:#666;">Date: ${order.createdAtIST || new Date().toLocaleDateString()}</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:10px;">${isCod ? 'COLLECT AMOUNT:' : 'TOTAL PAID:'}</div>
+              <div class="total-amt">₹${order.grandTotal || 0}</div>
+            </div>
+          </div>
+
+          <div class="no-print" style="margin-top:12px;text-align:center;">
+            <button onclick="window.print()" style="padding:8px 16px;background:#000;color:#fff;font-weight:bold;cursor:pointer;border-radius:4px;border:none;">Print Shipping Label</button>
+            <button onclick="window.close()" style="padding:8px 16px;margin-left:8px;cursor:pointer;">Close</button>
+          </div>
+        </div>
+        <script>
+          window.onload = function() {
+            setTimeout(function() { window.print(); }, 300);
+          };
+        </script>
+      </body>
       </html>
     `);
     printWindow.document.close();
@@ -1470,6 +1881,14 @@ export default function Orders() {
                           title="Print Invoice"
                         >
                           <FaPrint size={14} />
+                        </button>
+                        <button
+                          onClick={() => printShippingLabel(order)}
+                          className="p-2 rounded-lg hover:opacity-80 transition-colors"
+                          style={{ backgroundColor: '#6366F120', color: '#6366F1' }}
+                          title="Print Shipping Label"
+                        >
+                          <FaBarcode size={14} />
                         </button>
                         <button
                           onClick={() => copyToClipboard(order._id)}
