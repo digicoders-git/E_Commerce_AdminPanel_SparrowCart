@@ -43,10 +43,12 @@ import {
   FaTag,
   FaUserCircle,
   FaHistory,
-  FaList
+  FaList,
+  FaCut
 } from "react-icons/fa";
 import { useTheme } from "../context/ThemeContext";
 import { generateCode39Svg, getQrCodeUrl } from "../utils/barcodeGenerator";
+import ShippingLabelA4Modal from "../components/ShippingLabelA4Modal";
 import {
   getAllOrdersAPI,
   getOrderByIdAPI,
@@ -75,7 +77,20 @@ export default function Orders() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [paymentStatusFilter, setPaymentStatusFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
+  const [printStatusFilter, setPrintStatusFilter] = useState("all"); // 'all' | 'unprinted' | 'printed'
   const [sortBy, setSortBy] = useState("date_desc");
+
+  // 4-in-1 A4 Shipping Label selection & tracking
+  const [selectedOrders, setSelectedOrders] = useState([]);
+  const [a4ModalOpen, setA4ModalOpen] = useState(false);
+  const [printedOrderIds, setPrintedOrderIds] = useState(() => {
+    try {
+      const saved = localStorage.getItem("sparrowcart_printed_orders");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
   
   // Stats
   const [stats, setStats] = useState({
@@ -273,6 +288,15 @@ export default function Orders() {
         result = result.filter(order => order.store);
       }
     }
+
+    // Apply print status filter
+    if (printStatusFilter !== "all") {
+      if (printStatusFilter === "printed") {
+        result = result.filter(order => printedOrderIds.includes(order._id));
+      } else if (printStatusFilter === "unprinted") {
+        result = result.filter(order => !printedOrderIds.includes(order._id));
+      }
+    }
     
     // Apply sorting
     result.sort((a, b) => {
@@ -291,7 +315,56 @@ export default function Orders() {
     });
     
     setFilteredOrders(result);
-  }, [search, statusFilter, paymentStatusFilter, typeFilter, sortBy, orders]);
+  }, [search, statusFilter, paymentStatusFilter, typeFilter, printStatusFilter, sortBy, orders, printedOrderIds]);
+
+  // 4-in-1 A4 Selection Helpers
+  const toggleOrderSelection = (order) => {
+    setSelectedOrders(prev => {
+      const exists = prev.some(o => o._id === order._id);
+      if (exists) {
+        return prev.filter(o => o._id !== order._id);
+      } else {
+        if (prev.length >= 4) {
+          toast.warning("Maximum 4 orders can be selected for a single A4 page!");
+          return prev;
+        }
+        return [...prev, order];
+      }
+    });
+  };
+
+  const selectTop4Orders = () => {
+    // Prefer unprinted orders from current filtered view
+    const unprinted = filteredOrders.filter(o => !printedOrderIds.includes(o._id));
+    const toSelect = unprinted.length >= 4 
+      ? unprinted.slice(0, 4) 
+      : (unprinted.length > 0 ? unprinted : filteredOrders).slice(0, 4);
+
+    if (toSelect.length === 0) {
+      toast.info("No orders found to select.");
+      return;
+    }
+    setSelectedOrders(toSelect);
+    toast.success(`Selected ${toSelect.length} order(s) for 4-in-1 A4 printing.`);
+  };
+
+  const clearSelection = () => {
+    setSelectedOrders([]);
+  };
+
+  const handlePrintComplete = (newlyPrintedIds) => {
+    setPrintedOrderIds(prev => {
+      const updated = Array.from(new Set([...prev, ...newlyPrintedIds]));
+      try {
+        localStorage.setItem("sparrowcart_printed_orders", JSON.stringify(updated));
+      } catch (e) {
+        console.error("Failed to save printed orders to localStorage", e);
+      }
+      return updated;
+    });
+    setSelectedOrders([]);
+    toast.success("Labels printed! Orders marked as printed.");
+  };
 
   // Get status badge color
   const getStatusColor = (status) => {
@@ -1725,6 +1798,21 @@ export default function Orders() {
           </select>
 
           <select
+            value={printStatusFilter}
+            onChange={(e) => setPrintStatusFilter(e.target.value)}
+            className="px-3 py-2 rounded-lg border text-sm"
+            style={{
+              borderColor: themeColors.border,
+              backgroundColor: themeColors.background,
+              color: themeColors.text
+            }}
+          >
+            <option value="all">All Label Status</option>
+            <option value="unprinted">🏷️ Unprinted Only</option>
+            <option value="printed">✅ Printed Only</option>
+          </select>
+
+          <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
             className="px-3 py-2 rounded-lg border text-sm"
@@ -1739,6 +1827,86 @@ export default function Orders() {
             <option value="total_desc">Highest Amount</option>
             <option value="total_asc">Lowest Amount</option>
           </select>
+        </div>
+      </div>
+
+      {/* 4-in-1 A4 Shipping Label Action Bar */}
+      <div
+        className="p-3 md:p-4 rounded-xl border flex flex-wrap items-center justify-between gap-3 shadow-sm transition-all"
+        style={{
+          backgroundColor: selectedOrders.length > 0 ? '#6366F112' : themeColors.surface,
+          borderColor: selectedOrders.length > 0 ? '#6366F1' : themeColors.border
+        }}
+      >
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-sm">
+            <FaCut size={16} />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-sm" style={{ color: themeColors.text }}>
+                4-in-1 A4 Shipping Label Printing
+              </span>
+              <span
+                className={`px-2.5 py-0.5 rounded-full text-xs font-black transition-all ${
+                  selectedOrders.length === 4
+                    ? 'bg-emerald-600 text-white shadow-sm'
+                    : selectedOrders.length > 0
+                    ? 'bg-indigo-600 text-white shadow-sm'
+                    : 'bg-slate-200 text-slate-700'
+                }`}
+              >
+                {selectedOrders.length}/4 Selected
+              </span>
+            </div>
+            <p className="text-xs opacity-70" style={{ color: themeColors.text }}>
+              Select up to 4 orders from the list below to print 4 shipping labels on 1 A4 page (2×2 grid).
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={selectTop4Orders}
+            className="px-3.5 py-2 rounded-lg border text-xs font-bold transition-all hover:bg-black/5 flex items-center gap-1.5 shadow-sm"
+            style={{ borderColor: themeColors.border, color: themeColors.text }}
+            title="Quickly select the first 4 orders"
+          >
+            <FaCheck size={11} className="text-indigo-600" />
+            Select First 4 (Max 4)
+          </button>
+
+          {selectedOrders.length > 0 && (
+            <button
+              type="button"
+              onClick={clearSelection}
+              className="px-3 py-2 rounded-lg border text-xs font-bold transition-all hover:bg-red-50 text-red-600 border-red-200 shadow-sm"
+              title="Clear selection"
+            >
+              Clear ({selectedOrders.length})
+            </button>
+          )}
+
+          <button
+            type="button"
+            onClick={() => {
+              if (selectedOrders.length === 0) {
+                toast.warning("Please select at least 1 order to print 4-in-1 labels.");
+                return;
+              }
+              setA4ModalOpen(true);
+            }}
+            disabled={selectedOrders.length === 0}
+            className={`px-4 py-2 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 text-white shadow-md transition-all ${
+              selectedOrders.length === 0
+                ? 'opacity-40 cursor-not-allowed bg-gray-400'
+                : 'hover:scale-105 active:scale-95 bg-indigo-600 hover:bg-indigo-700 shadow-indigo-500/25'
+            }`}
+          >
+            <FaPrint size={14} />
+            Print 4-in-1 A4 Labels {selectedOrders.length > 0 ? `(${selectedOrders.length})` : ''}
+          </button>
         </div>
       </div>
 
@@ -1762,6 +1930,9 @@ export default function Orders() {
             <table className="w-full">
               <thead>
                 <tr style={{ backgroundColor: themeColors.background }}>
+                  <th className="p-4 w-12 text-center">
+                    <span className="text-xs font-bold opacity-70">A4</span>
+                  </th>
                   <th className="text-left p-4 font-medium text-sm" style={{ color: themeColors.text }}>Order ID</th>
                   <th className="text-left p-4 font-medium text-sm" style={{ color: themeColors.text }}>Customer</th>
                   <th className="text-left p-4 font-medium text-sm" style={{ color: themeColors.text }}>Items</th>
@@ -1773,34 +1944,61 @@ export default function Orders() {
                 </tr>
               </thead>
               <tbody>
-                {filteredOrders.map((order, index) => (
-                  <tr 
-                    key={order._id || index} 
-                    className={`border-t hover:bg-opacity-50 ${index % 2 === 0 ? '' : ''}`} 
-                    style={{ borderColor: themeColors.border, backgroundColor: index % 2 === 0 ? themeColors.background + '30' : 'transparent' }}
-                  >
-                    <td className="p-4">
-                      <div className="flex items-center gap-2">
-                        <div>
-                          <p className="font-mono text-xs" style={{ color: themeColors.text }}>
-                            {order._id?.substring(0, 10)}...
-                          </p>
-                          <div className="flex items-center gap-1 mt-1">
-                            {order.store ? (
-                              <span className="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-800 inline-flex items-center">
-                                <FaStore size={10} className="mr-1" />
-                                Store
-                              </span>
-                            ) : (
-                              <span className="text-xs px-2 py-1 rounded-full bg-green-100 text-green-800 inline-flex items-center">
-                                <FaGlobe size={10} className="mr-1" />
-                                Global
-                              </span>
-                            )}
+                {filteredOrders.map((order, index) => {
+                  const isSelected = selectedOrders.some(o => o._id === order._id);
+                  const isPrinted = printedOrderIds.includes(order._id);
+
+                  return (
+                    <tr 
+                      key={order._id || index} 
+                      className={`border-t transition-colors ${isSelected ? 'bg-indigo-50/70 dark:bg-indigo-950/40' : 'hover:bg-opacity-50'}`} 
+                      style={{ 
+                        borderColor: isSelected ? '#6366F1' : themeColors.border, 
+                        backgroundColor: isSelected ? '#6366F112' : (index % 2 === 0 ? themeColors.background + '30' : 'transparent') 
+                      }}
+                    >
+                      <td className="p-4 text-center">
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={() => toggleOrderSelection(order)}
+                          className="w-4 h-4 rounded accent-indigo-600 cursor-pointer"
+                          title={isSelected ? "Unselect from 4-in-1 A4 printing" : "Select for 4-in-1 A4 printing (Max 4)"}
+                        />
+                      </td>
+                      <td className="p-4">
+                        <div className="flex items-center gap-2">
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <p className="font-mono text-xs font-bold" style={{ color: themeColors.text }}>
+                                {order.orderNumber ? `#${order.orderNumber}` : `${order._id?.substring(0, 10)}...`}
+                              </p>
+                              {isPrinted ? (
+                                <span className="text-[10px] px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 font-bold inline-flex items-center">
+                                  🏷️ Printed
+                                </span>
+                              ) : (
+                                <span className="text-[10px] px-1.5 py-0.2 rounded bg-slate-100 text-slate-600 font-medium inline-flex items-center">
+                                  Unprinted
+                                </span>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-1 mt-1">
+                              {order.store ? (
+                                <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 inline-flex items-center">
+                                  <FaStore size={10} className="mr-1" />
+                                  Store
+                                </span>
+                              ) : (
+                                <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-800 inline-flex items-center">
+                                  <FaGlobe size={10} className="mr-1" />
+                                  Global
+                                </span>
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </td>
+                      </td>
                     <td className="p-4">
                       <div>
                         <p className="font-medium" style={{ color: themeColors.text }}>{order.user?.fullName}</p>
@@ -1910,12 +2108,22 @@ export default function Orders() {
                       </div>
                     </td>
                   </tr>
-                ))}
+                );
+              })}
               </tbody>
             </table>
           </div>
         </div>
       )}
+
+      {/* 4-in-1 A4 Shipping Label Modal */}
+      <ShippingLabelA4Modal
+        isOpen={a4ModalOpen}
+        onClose={() => setA4ModalOpen(false)}
+        selectedOrders={selectedOrders}
+        onPrintComplete={handlePrintComplete}
+        themeColors={themeColors}
+      />
 
     </div>
   );
